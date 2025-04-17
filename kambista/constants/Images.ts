@@ -1,3 +1,4 @@
-import kambista from "../assets/images/kambista.png";
+import Logo from '../assets/images/logo.png';
+import Phone from '../assets/images/phone.png';
 
-export default { kambista };
+export default { Logo, Phone };

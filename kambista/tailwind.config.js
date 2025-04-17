@@ -8,22 +8,26 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        primary: "#FFDEDE",
+        primary: {
+          DEFAULT: "#05e2c3",
+          200: "#5BE2C4",
+          500: "#05e2c3",
+        },
         black: {
           DEFAULT: "#000",
         },
-        gray: {
-          DEFAULT: "#F7F7F7",
-          800: "#434343",
-        },
       },
-      // fontFamily: {
-      //   qlight: ["Quicksand-Light"],
-      //   qregular: ["Quicksand-Regular"],
-      //   qmedium: ["Quicksand-Medium"],
-      //   qsemibold: ["Quicksand-SemiBold"],
-      //   qbold: ["Quicksand-Bold"],
-      // },
+      fontFamily: {
+        mthin: ["Montserrat-Thin"],
+        mextralight: ["Montserrat-ExtraLight"],
+        mlight: ["Montserrat-Light"],
+        mregular: ["Montserrat-Regular"],
+        mmedium: ["Montserrat-Medium"],
+        msemibold: ["Montserrat-SemiBold"],
+        mbold: ["Montserrat-Bold"],
+        mextrabold: ["Montserrat-ExtraBold"],
+        mblack: ["Montserrat-Black"],
+      },
     },
   },
   plugins: [],
