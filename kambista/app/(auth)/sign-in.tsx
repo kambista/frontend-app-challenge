@@ -8,6 +8,7 @@ import Images from '@/constants/Images';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import { MaterialIcons } from '@expo/vector-icons';
+import useAuth from '@/hooks/useAuth';
 
 const LoginSchema = Yup.object({
   email: Yup.string().email('Correo inválido').required('Campo requerido'),
@@ -15,23 +16,25 @@ const LoginSchema = Yup.object({
 });
 
 const SignIn = () => {
-  const [showPassword, setShowPassword] = useState(false);
+  const [showPassword, setShowPassword] = useState(true);
+  const { login } = useAuth();
 
-  const handleSubmit = async (values: any) => {
+  const handleSubmit = (values: { email: string; password: string }) => {
     try {
-      // const success = await login(data);
-      // if (success) {
-      //   navigateToHome();
-      // } else {
-      //   // ShowError('Usuario o contraseña incorrecta.');
-      // }
+      const success = login(values);
+      if (success) {
+        Logger.log('Inicio de sesión satisfactorio.');
+        navigateToHome();
+      } else {
+        Logger.log('Credenciales inválidas');
+      }
     } catch (error: any) {
       Logger.error(error);
     }
   };
 
   const formik = useFormik({
-    initialValues: { email: '', password: '' },
+    initialValues: { email: 'edu@gmail.com', password: '12345678' },
     validationSchema: LoginSchema,
     onSubmit: handleSubmit,
   });
@@ -91,7 +94,7 @@ const SignIn = () => {
                     onBlur={formik.handleBlur('password')}
                   />
                   <TouchableOpacity onPress={() => setShowPassword(!showPassword)}>
-                    <MaterialIcons name={showPassword ? 'visibility-off' : 'visibility'} size={20} color="gray" />
+                    <MaterialIcons name={showPassword ? 'visibility' : 'visibility-off'} size={20} color="gray" />
                   </TouchableOpacity>
                 </View>
                 {formik.touched.password && formik.errors.password && (
@@ -110,7 +113,7 @@ const SignIn = () => {
             </View>
 
             <View className="my-8" />
-            <TouchableOpacity onPress={navigateToHome} className="w-full py-5 rounded-xl bg-primary">
+            <TouchableOpacity onPress={formik.submitForm} className="w-full py-5 rounded-xl bg-primary">
               <Text className="text-center text-lg font-msemibold">INICIA SESIÓN</Text>
             </TouchableOpacity>
 

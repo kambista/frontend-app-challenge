@@ -18,9 +18,9 @@ export default function TabLayout() {
   const { isLoggedIn } = useAuthStore();
 
   // Todo el Tab está protegido
-  // if (!isLoggedIn) {
-  //   return <Redirect href={'/sign-in'} />;
-  // }
+  if (!isLoggedIn) {
+    return <Redirect href={'/sign-in'} />;
+  }
 
   return (
     <>

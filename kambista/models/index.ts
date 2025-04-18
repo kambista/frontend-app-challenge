@@ -22,3 +22,9 @@ export interface Currency {
   code: string;
   name: string;
 }
+
+export interface User {
+  id: number;
+  email: string;
+  password: string;
+}

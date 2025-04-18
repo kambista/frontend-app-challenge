@@ -1,5 +1,7 @@
+import { Users } from '@/constants/Backend';
 import AuthService from '@/services/authService';
 import { useAuthStore } from '@/store/authStore';
+import { Logger } from '@/utils/logger';
 import { useState } from 'react';
 
 const useAuth = () => {
@@ -7,22 +9,19 @@ const useAuth = () => {
 
   const { login: loginStore, logout: logoutStore } = useAuthStore();
 
-  const login = async (values: { email: string; password: string }) => {
+  const login = (values: { email: string; password: string }) => {
     setLoading(true);
     try {
-      const resp = await AuthService.login({
-        email: values.email,
-        password: values.password,
-      });
+      const userExists = Users.some((user) => user.email === values.email && user.password === values.password);
 
-      if (resp.token) {
-        loginStore({ ...resp }, resp.token);
+      if (userExists) {
+        loginStore(userExists, 'token');
         return true;
+      } else {
+        return false;
       }
-      return false;
     } catch (err) {
       console.error('ERROR', err);
-      // ShowError(`Error al iniciar sesión ${err}`);
       return false;
     } finally {
       setLoading(false);

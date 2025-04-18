@@ -1,4 +1,4 @@
-import { Account, Bank, Currency, SourceFund } from '@/models';
+import { Account, Bank, Currency, SourceFund, User } from '@/models';
 
 export const Currencies: Currency[] = [
   {
@@ -130,4 +130,17 @@ export const Accounts: Account[] = [
   },
 ];
 
-export const Coupons = ["EDU", "FREE", "ABC"]
+export const Coupons = ['EDU', 'FREE', 'ABC'];
+
+export const Users: User[] = [
+  {
+    id: 1,
+    email: 'edu@gmail.com',
+    password: '12345678',
+  },
+  {
+    id: 2,
+    email: 'ejemplo@gmail.com',
+    password: '12345678',
+  },
+];
