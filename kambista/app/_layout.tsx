@@ -6,6 +6,7 @@ import React, { useEffect } from 'react';
 import 'react-native-reanimated';
 import '../global.css';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import { NavigationContainer } from '@react-navigation/native';
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();

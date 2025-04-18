@@ -4,7 +4,7 @@ import { LoginRequest, LoginResponse } from "@/models/dto/authDTO";
 
 const AuthService = {
   async login(request: LoginRequest): Promise<LoginResponse> {
-    const response = await instance.post<LoginResponse>(`/Pla_user/login`, request);
+    const response = await instance.post<LoginResponse>(`/`, request);
     return response.data;
   },
 }
