@@ -5,7 +5,12 @@ import Header from '@/components/Header';
 import Stepper from '@/components/Stepper';
 import { TransactionStepper } from '@/constants/Steppers';
 import { Octicons } from '@expo/vector-icons';
+import { router } from 'expo-router';
 const History = () => {
+  const navigateToTransfer = () => {
+    router.push('/(tabs)/home/transaction/transfer');
+  };
+
   return (
     <SafeAreaView className="min-h-screen">
       <ScrollView className="px-6 pt-6">
@@ -51,7 +56,7 @@ const History = () => {
         <View className="my-2" />
 
         <Text className="font-mmedium text-black mb-2">¿Desde qué banco nos envias tu dinero?</Text>
-        <TouchableOpacity className="font-mmedium border border-gray-300 rounded-lg py-4 px-5 border-gray-300 bg-white flex flex-row justify-between">
+        <TouchableOpacity className="font-mmedium border border-gray-300 rounded-lg py-4 px-5 bg-white flex flex-row justify-between">
           <Text className="font-mlight text-mmedium">Selecciona</Text>
           <Octicons name="chevron-down" size={20} />
         </TouchableOpacity>
@@ -59,7 +64,7 @@ const History = () => {
         <View className="my-4" />
 
         <Text className="font-mmedium text-black mb-2">¿En qué cuenta deseas recibir tu dinero?</Text>
-        <TouchableOpacity className="font-mmedium border border-gray-300 rounded-lg py-4 px-5 border-gray-300 bg-white flex flex-row justify-between">
+        <TouchableOpacity className="font-mmedium border border-gray-300 rounded-lg py-4 px-5 bg-white flex flex-row justify-between">
           <Text className="font-mlight text-mmedium">Selecciona</Text>
           <Octicons name="chevron-down" size={20} />
         </TouchableOpacity>
@@ -81,7 +86,7 @@ const History = () => {
 
         <View className="my-4" />
 
-        <TouchableOpacity onPress={() => {}} className="w-full py-5 rounded-xl bg-primary">
+        <TouchableOpacity onPress={navigateToTransfer} className="w-full py-5 rounded-xl bg-primary">
           <Text className="text-center text-lg font-msemibold">CONTINUAR</Text>
         </TouchableOpacity>
 

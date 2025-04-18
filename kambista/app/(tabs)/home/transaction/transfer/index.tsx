@@ -1,33 +1,76 @@
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { View, Image, Text, ScrollView } from 'react-native';
+import { View, Image, Text, ScrollView, TouchableOpacity } from 'react-native';
 import React from 'react';
+import Header from '@/components/Header';
+import Stepper from '@/components/Stepper';
+import { TransactionStepper } from '@/constants/Steppers';
+import { router } from 'expo-router';
+import Images from '@/constants/Images';
 
 const History = () => {
+  const navigateToConstancy = () => {
+    router.push('/(tabs)/home/transaction/constancy');
+  };
+
   return (
     <SafeAreaView className="min-h-screen">
       <ScrollView className="px-6 py-2">
-        <View className="flex items-center justify-center mt-14">
-          {false ? (
-            <Image
-              className={`aspect-square bg-primary h-28 rounded-full`}
-              source={{
-                uri: undefined, // professional.foto,
-              }}
-            />
-          ) : (
-            <View className={`aspect-square bg-primary items-center justify-center h-28 rounded-full`}>
-              <Text className="text-5xl text-[#434343] font-qregular">{'Facundo'.charAt(0)}</Text>
-            </View>
-          )}
-          <View className="my-1" />
+        <Header title="Completa los datos" />
+        <View className="my-2" />
 
-          <Text className="font-psemibold text-xl font-qsemibold text-gray-800">Facundo Ramón Z.</Text>
-          <Text className="font-qmedium text-base text-gray-500">facundo@gmail.com</Text>
+        <View className="w-[85%] self-center">
+          <Stepper steps={TransactionStepper} activeStep={1} />
+        </View>
+
+        <View className="my-3" />
+
+        <View className="flex flex-row justify-between items-center">
+          <Text className="font-mmedium text-sm text-gray-800">El tipo de cambio podría actualizarse a las:</Text>
+          <Text className="font-msemibold text-xl text-gray-800">13:15</Text>
+        </View>
+
+        
+        <View className="bg-white rounded-xl flex flex-column px-8 py-4">
+          
+          <View className="justify-center items-center">
+            <Image source={Images.Logo} className="w-48" resizeMode="contain" />
+          </View>
+          
+          <Text className="font-mregular text-lg text-gray-800">
+            Transfiere desde tu app bancaria y guarda el número o código de operación para el siguiente paso.
+          </Text>
+
+          <View className="my-2" />
+
+          <View className="border border-gray-300 rounded-lg py-4 px-5">
+            <Text className="font-mmedium text-sm text-gray-800">Banco</Text>
+            <Text className="font-mbold text-black mb-2">Interbank</Text>
+
+            <Text className="font-mmedium text-sm text-gray-800">Monto</Text>
+            <Text className="font-mbold text-black mb-2">S/. 1000.00</Text>
+
+            <Text className="font-mmedium text-sm text-gray-800">Número de cuenta</Text>
+            <Text className="font-mbold text-black mb-2">12312312312390</Text>
+
+            <Text className="font-mmedium text-sm text-gray-800">RUC</Text>
+            <Text className="font-mbold text-black mb-2">123123123123</Text>
+
+            <Text className="font-mmedium text-sm text-gray-800">Titular de la cuenta</Text>
+            <Text className="font-mbold text-black mb-2">Kambista SAC</Text>
+
+            <Text className="font-mmedium text-sm text-gray-800">Tipo de cuenta</Text>
+            <Text className="font-mbold text-black">Corriente</Text>
+          </View>
+          <View className="my-2" />
         </View>
 
         <View className="my-4" />
 
-        <View className="my-12" />
+        <TouchableOpacity onPress={navigateToConstancy} className="w-full py-5 rounded-xl bg-primary">
+          <Text className="text-center text-lg font-msemibold">YA HICE MI TRANSFERENCIA</Text>
+        </TouchableOpacity>
+
+        <View className="my-16" />
       </ScrollView>
     </SafeAreaView>
   );

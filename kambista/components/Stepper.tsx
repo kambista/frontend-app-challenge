@@ -46,7 +46,7 @@ export default function Stepper({ steps, activeStep = 0, onStepChange, stepColor
 
               {/* Step Label */}
               <View className="absolute -bottom-6 w-24 items-center">
-                <Text className={`text-sm ${isCurrent ? 'text-black font-mbold' : 'text-gray-400 font-msemibold'}`}>{step.title}</Text>
+                <Text className={`text-sm ${isActive ? 'text-black font-mbold' : 'text-gray-400 font-msemibold'}`}>{step.title}</Text>
               </View>
             </View>
           );
