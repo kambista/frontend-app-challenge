@@ -4,7 +4,7 @@ import React, { useCallback, useState } from 'react';
 import Images from '@/constants/Images';
 import Backend from '@/constants/Backend';
 import { Picker } from '@react-native-picker/picker';
-import { useFocusEffect } from 'expo-router';
+import { router, useFocusEffect } from 'expo-router';
 import { Logger } from '@/utils/logger';
 import ExchangeService from '@/services/exchangeService';
 import { CalculatorRequest, CalculatorResponse, ExchangeRateResponse } from '@/models/dto/exchangeDTO';
@@ -68,6 +68,10 @@ const Home = () => {
         calculate();
         break;
     }
+  };
+
+  const navigateToTransaction = () => {
+    router.push('/(tabs)/home/transaction');
   };
 
   useFocusEffect(
@@ -192,7 +196,7 @@ const Home = () => {
 
         <View className="my-2" />
 
-        <TouchableOpacity onPress={() => {}} className="w-full py-5 rounded-xl bg-primary">
+        <TouchableOpacity onPress={navigateToTransaction} className="w-full py-5 rounded-xl bg-primary">
           <Text className="text-center text-lg font-msemibold">INICIAR OPERACIÓN</Text>
         </TouchableOpacity>
 

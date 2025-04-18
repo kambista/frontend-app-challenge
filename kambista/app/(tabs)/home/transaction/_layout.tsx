@@ -5,13 +5,14 @@ export default function UserLayout() {
   return (
     <>
       <Stack 
-        initialRouteName="index"
+        initialRouteName="complete"
         screenOptions={{
           contentStyle: { backgroundColor: "#f6f6f9" },
         }}
       >
-        <Stack.Screen name="index" options={{ headerShown: false }} />
-        <Stack.Screen name="transaction" options={{ headerShown: false }} />
+        <Stack.Screen name="complete" options={{ headerShown: false }} />
+        <Stack.Screen name="constancy" options={{ headerShown: false }} />
+        <Stack.Screen name="transfer" options={{ headerShown: false }} />
       </Stack>
     </>
   );

@@ -11,7 +11,6 @@ export default function UserLayout() {
         }}
       >
         <Stack.Screen name="index" options={{ headerShown: false }} />
-        <Stack.Screen name="transaction" options={{ headerShown: false }} />
       </Stack>
     </>
   );
