@@ -1,18 +1,56 @@
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { View, Image, Text, ScrollView, TouchableOpacity } from 'react-native';
-import React from 'react';
+import React, { useRef, useState } from 'react';
 import Header from '@/components/Header';
 import Stepper from '@/components/Stepper';
 import { TransactionStepper } from '@/constants/Steppers';
 import { Octicons } from '@expo/vector-icons';
 import { router } from 'expo-router';
+import { BottomSheetModal, useBottomSheetModal } from '@gorhom/bottom-sheet';
+import { Logger } from '@/utils/logger';
+import SelectBankDrawer from '@/components/drawers/SelectBankDrawer';
+import SelectSourceDrawer from '@/components/drawers/SelectSourceDrawer';
+import SelectAccountDrawer from '@/components/drawers/SelectAccountDrawer';
+import { Account, Bank, SourceFund } from '@/models';
+
 const History = () => {
+  const [bank, setBank] = useState<Bank>();
+  const [account, setAccount] = useState<Account>();
+  const [sourceFund, setSourceFund] = useState<SourceFund>();
+
   const navigateToTransfer = () => {
     router.push('/(tabs)/home/transaction/transfer');
   };
 
+  const { dismiss } = useBottomSheetModal();
+
+  const bankDrawerRef = useRef<BottomSheetModal>(null);
+  const handlePresentBankDrawer = () => bankDrawerRef.current?.present();
+  const handleBankSelected = async (bank: Bank) => {
+    setBank(bank);
+    dismiss();
+  };
+
+  const sourceDrawerRef = useRef<BottomSheetModal>(null);
+  const handlePresentSourceDrawer = () => sourceDrawerRef.current?.present();
+  const handleSourceSelected = async (sourceFund: SourceFund) => {
+    setSourceFund(sourceFund);
+    dismiss();
+  };
+
+  const accountDrawerRef = useRef<BottomSheetModal>(null);
+  const handlePresentAccountDrawer = () => accountDrawerRef.current?.present();
+  const handleAccountSelected = async (account: Account) => {
+    setAccount(account);
+    dismiss();
+  };
+
   return (
     <SafeAreaView className="min-h-screen">
+      <SelectBankDrawer ref={bankDrawerRef} onBankAccountSelected={handleBankSelected} />
+      <SelectSourceDrawer ref={sourceDrawerRef} onSourceFundSelected={handleSourceSelected} />
+      <SelectAccountDrawer ref={accountDrawerRef} onAccountSelected={handleAccountSelected} />
+
       <ScrollView className="px-6 pt-6">
         <Header title="Completa los datos" />
         <View className="my-2" />
@@ -56,16 +94,22 @@ const History = () => {
         <View className="my-2" />
 
         <Text className="font-mmedium text-black mb-2">¿Desde qué banco nos envias tu dinero?</Text>
-        <TouchableOpacity className="font-mmedium border border-gray-300 rounded-lg py-4 px-5 bg-white flex flex-row justify-between">
-          <Text className="font-mlight text-mmedium">Selecciona</Text>
+        <TouchableOpacity
+          onPress={handlePresentBankDrawer}
+          className="font-mmedium border border-gray-300 rounded-lg py-4 px-5 bg-white flex flex-row justify-between"
+        >
+          <Text className={`${bank ? 'font-msemibold' : 'font-mlight'}`}>{bank?.name || 'Selecciona'}</Text>
           <Octicons name="chevron-down" size={20} />
         </TouchableOpacity>
 
         <View className="my-4" />
 
         <Text className="font-mmedium text-black mb-2">¿En qué cuenta deseas recibir tu dinero?</Text>
-        <TouchableOpacity className="font-mmedium border border-gray-300 rounded-lg py-4 px-5 bg-white flex flex-row justify-between">
-          <Text className="font-mlight text-mmedium">Selecciona</Text>
+        <TouchableOpacity
+          onPress={handlePresentAccountDrawer}
+          className="font-mmedium border border-gray-300 rounded-lg py-4 px-5 bg-white flex flex-row justify-between"
+        >
+          <Text className={`${account ? 'font-msemibold' : 'font-mlight'}`}>{account?.account_name || 'Selecciona'}</Text>
           <Octicons name="chevron-down" size={20} />
         </TouchableOpacity>
 
@@ -79,8 +123,11 @@ const History = () => {
         <View className="my-4" />
 
         <Text className="font-mmedium text-black mb-2">Origen de fondos</Text>
-        <TouchableOpacity className="font-mmedium border border-gray-300 rounded-lg py-4 px-5 border-gray-300 bg-white flex flex-row justify-between">
-          <Text className="font-mlight text-mmedium">Selecciona</Text>
+        <TouchableOpacity
+          onPress={handlePresentSourceDrawer}
+          className="font-mmedium border border-gray-300 rounded-lg py-4 px-5 border-gray-300 bg-white flex flex-row justify-between"
+        >
+          <Text className={`${sourceFund ? 'font-msemibold' : 'font-mlight'}`}>{sourceFund?.name || 'Selecciona'}</Text>
           <Octicons name="chevron-down" size={20} />
         </TouchableOpacity>
 

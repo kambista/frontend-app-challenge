@@ -6,6 +6,7 @@ import { TransactionStepper } from '@/constants/Steppers';
 import Stepper from '@/components/Stepper';
 import Header from '@/components/Header';
 import Images from '@/constants/Images';
+import { Octicons } from '@expo/vector-icons';
 
 const History = () => {
   const navigateToFinishTransaction = () => {
@@ -33,11 +34,15 @@ const History = () => {
 
           <View className="border border-gray-300 rounded-lg py-4 px-5">
             <Text className="font-mmedium text-md text-black">Sube el archivo de tu constancia</Text>
+            <TouchableOpacity className="font-mmedium border border-gray-300 rounded-lg py-4 my-2 px-5 bg-white flex flex-row justify-between">
+              <Text className="font-mlight text-mmedium">Selecciona</Text>
+              <Octicons name="upload" size={20} />
+            </TouchableOpacity>
             <Text className="font-mmedium text-md text-black">*Tamaño máximo permitido del archivo 10 Mb</Text>
           </View>
 
           <Text className="font-mregular text-gray-800">Recuerda:</Text>
-          
+
           <Text className="font-mregular text-gray-800">El voucher enviado debe tener el monto, datos del beneficiario, fecha y hora.</Text>
           <Text className="font-mregular text-gray-800">El voucher debe ser legible.</Text>
           <Text className="font-mregular text-gray-800">Archivos permitidos imágenes, word y PDF</Text>

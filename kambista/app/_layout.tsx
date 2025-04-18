@@ -7,6 +7,7 @@ import 'react-native-reanimated';
 import '../global.css';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { NavigationContainer } from '@react-navigation/native';
+import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
@@ -36,18 +37,20 @@ export default function RootLayout() {
 
   return (
     <GestureHandlerRootView>
-      <Stack
-        screenOptions={{
-          contentStyle: { backgroundColor: 'white' },
-        }}
-      >
-        <Stack.Screen name="index" options={{ headerShown: false }} />
-        <Stack.Screen name="(auth)" options={{ headerShown: false }} />
-        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+      <BottomSheetModalProvider>
+        <Stack
+          screenOptions={{
+            contentStyle: { backgroundColor: 'white' },
+          }}
+        >
+          <Stack.Screen name="index" options={{ headerShown: false }} />
+          <Stack.Screen name="(auth)" options={{ headerShown: false }} />
+          <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
 
-        <Stack.Screen name="+not-found" />
-      </Stack>
-      <StatusBar backgroundColor="white" style="dark" />
+          <Stack.Screen name="+not-found" />
+        </Stack>
+        <StatusBar backgroundColor="white" style="dark" />
+      </BottomSheetModalProvider>
     </GestureHandlerRootView>
   );
 }

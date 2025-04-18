@@ -2,16 +2,16 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { View, Image, Text, ScrollView, TouchableOpacity, TextInput, StyleSheet } from 'react-native';
 import React, { useCallback, useState } from 'react';
 import Images from '@/constants/Images';
-import Backend from '@/constants/Backend';
 import { Picker } from '@react-native-picker/picker';
 import { router, useFocusEffect } from 'expo-router';
 import { Logger } from '@/utils/logger';
 import ExchangeService from '@/services/exchangeService';
 import { CalculatorRequest, CalculatorResponse, ExchangeRateResponse } from '@/models/dto/exchangeDTO';
 import { Octicons } from '@expo/vector-icons';
+import { Currencies } from '@/constants/Backend';
 
 const Home = () => {
-  const currencies = Backend.Currencies;
+  const currencies = Currencies;
   const [exchangeRate, setExchangeRate] = useState<ExchangeRateResponse>();
   const [originCurrency, setOriginCurrency] = useState(currencies[0].code);
   const [destinationCurrency, setDestinationCurrency] = useState(currencies[1].code);
