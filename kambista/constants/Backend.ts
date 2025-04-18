@@ -129,3 +129,5 @@ export const Accounts: Account[] = [
     account_name: 'BCP',
   },
 ];
+
+export const Coupons = ["EDU", "FREE", "ABC"]

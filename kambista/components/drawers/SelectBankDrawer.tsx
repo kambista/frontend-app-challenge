@@ -15,8 +15,6 @@ const SelectBankDrawer = forwardRef<Ref, SelectBankDrawerProps>((props, ref) => 
   const renderBackdrop = useCallback((props: any) => <BottomSheetBackdrop {...props} disappearsOnIndex={-1} appearsOnIndex={0} />, []);
 
   const onBankAccountSelected = (bankAccount: any) => {
-    // if (bankAccount.id == selectedCentral.id) return;
-    // if (bankAccount.id == '1') return;
     props.onBankAccountSelected(bankAccount);
   };
 

@@ -12,11 +12,20 @@ import SelectBankDrawer from '@/components/drawers/SelectBankDrawer';
 import SelectSourceDrawer from '@/components/drawers/SelectSourceDrawer';
 import SelectAccountDrawer from '@/components/drawers/SelectAccountDrawer';
 import { Account, Bank, SourceFund } from '@/models';
+import useTransaction from '@/hooks/useTransaction';
 
 const History = () => {
   const [bank, setBank] = useState<Bank>();
   const [account, setAccount] = useState<Account>();
   const [sourceFund, setSourceFund] = useState<SourceFund>();
+
+  const { calculatorRequest, calculatorResponse, completeTransaction, coupon } = useTransaction();
+
+  const handleContinue = () => {
+    if (!bank || !account || !sourceFund) return;
+    completeTransaction(bank, account, sourceFund);
+    navigateToTransfer();
+  };
 
   const navigateToTransfer = () => {
     router.push('/(tabs)/home/transaction/transfer');
@@ -64,22 +73,26 @@ const History = () => {
         <View className="bg-white rounded-xl flex flex-column px-8 py-4">
           <View className="flex flex-row justify-between">
             <Text className="font-mmedium text-gray-800">Tú envías</Text>
-            <Text className="font-mbold text-black">S/. 100.00</Text>
+            <Text className="font-mbold text-black">
+              {calculatorRequest?.originCurrency} {calculatorRequest?.amount}
+            </Text>
           </View>
           <View className="flex flex-row justify-between">
             <Text className="font-mmedium text-gray-800">Tú recibes</Text>
-            <Text className="font-mbold text-black">S/. 343.00</Text>
+            <Text className="font-mbold text-black">
+              {calculatorRequest?.destinationCurrency} {calculatorResponse?.exchange}
+            </Text>
           </View>
           <View className="flex flex-row justify-between">
             <Text className="font-mmedium text-gray-800">Cupón aplicado</Text>
-            <Text className="font-mbold text-black">-</Text>
+            <Text className="font-mbold text-black">{coupon || "-"}</Text>
           </View>
 
           <View className="flex-1 h-px bg-gray-300 my-2" />
 
           <View className="flex flex-row justify-between">
             <Text className="font-mbold text-gray-800">Tipo de cambio utilizado</Text>
-            <Text className="font-mbold text-black">3.433</Text>
+            <Text className="font-mbold text-black">{calculatorResponse?.rate}</Text>
           </View>
         </View>
 
@@ -133,7 +146,7 @@ const History = () => {
 
         <View className="my-4" />
 
-        <TouchableOpacity onPress={navigateToTransfer} className="w-full py-5 rounded-xl bg-primary">
+        <TouchableOpacity onPress={handleContinue} className="w-full py-5 rounded-xl bg-primary">
           <Text className="text-center text-lg font-msemibold">CONTINUAR</Text>
         </TouchableOpacity>
 

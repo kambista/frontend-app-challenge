@@ -20,7 +20,7 @@ export default function UserLayout() {
         <Stack.Screen name="complete" options={{ headerShown: false }} />
         <Stack.Screen name="constancy" options={{ headerShown: false }} />
         <Stack.Screen name="transfer" options={{ headerShown: false }} />
-        <Stack.Screen name="finish_transaction" options={{ headerShown: false }} />
+        <Stack.Screen name="finish-transaction" options={{ headerShown: false }} />
       </Stack>
     </>
   );

@@ -6,9 +6,13 @@ import { TransactionStepper } from '@/constants/Steppers';
 import Stepper from '@/components/Stepper';
 import Header from '@/components/Header';
 import Images from '@/constants/Images';
+import useTransaction from '@/hooks/useTransaction';
 
 const History = () => {
+  const { calculatorRequest, calculatorResponse, resetTransaction } = useTransaction();
+
   const navigateToHome = () => {
+    resetTransaction();
     router.replace('/(tabs)/home');
   };
 
@@ -32,7 +36,9 @@ const History = () => {
           <Text className="font-mmedium text-sm text-gray-800 mb-2">*Usa tu código para dar seguimiento a la operación</Text>
 
           <Text className="font-mmedium text-sm text-gray-800">Monto a recibir</Text>
-          <Text className="font-mbold text-lg mb-2">S/. 343.00</Text>
+          <Text className="font-mbold text-lg mb-2">
+            {calculatorRequest?.destinationCurrency} {calculatorResponse?.exchange}
+          </Text>
 
           <Text className="font-mmedium text-sm text-gray-800">Tiempo estimado de espera</Text>
           <Text className="font-mbold text-lg mb-2">20h 15m</Text>
