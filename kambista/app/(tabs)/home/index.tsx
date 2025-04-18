@@ -9,6 +9,7 @@ import ExchangeService from '@/services/exchangeService';
 import { CalculatorRequest, CalculatorResponse, ExchangeRateResponse } from '@/models/dto/exchangeDTO';
 import { Octicons } from '@expo/vector-icons';
 import { Currencies } from '@/constants/Backend';
+import useUI from '@/hooks/useUI';
 
 const Home = () => {
   const currencies = Currencies;
@@ -17,6 +18,8 @@ const Home = () => {
   const [destinationCurrency, setDestinationCurrency] = useState(currencies[1].code);
   const [amount, setAmount] = useState('100');
   const [result, setResult] = useState<CalculatorResponse>();
+
+  const { forceShowTabBar } = useUI();
 
   const fetchExchangeRate = async () => {
     try {
@@ -73,6 +76,8 @@ const Home = () => {
   const navigateToTransaction = () => {
     router.push('/(tabs)/home/transaction');
   };
+
+  forceShowTabBar();
 
   useFocusEffect(
     useCallback(() => {

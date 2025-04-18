@@ -23,7 +23,7 @@ const BottomTabButton = ({ isFocused, label, icon, color, navigation, route }: B
   }));
 
   const animatedTextStyle = useAnimatedStyle(() => ({
-    opacity: interpolate(scale.value, [0, 1], [0, 1]),
+    transform: [{ scale: interpolate(scale.value, [0, 0.8], [0.85, 1]) }],
   }));
 
   const handlePress = () => {
@@ -47,11 +47,10 @@ const BottomTabButton = ({ isFocused, label, icon, color, navigation, route }: B
 
   return (
     <TouchableOpacity onPress={handlePress} onLongPress={handleLongPress} className="flex-1 justify-center items-center">
-      {/* <Animated.View className="h-0.5 bg-black w-7" style={[animatedTextStyle]} /> */}
-      <View className="my-1.5" />
+      <View className="my-2" />
       <Animated.View style={[animatedIconStyle]}>{icon}</Animated.View>
       <View className="my-0.5" />
-      <Animated.Text className={`text-[${color}] text-xs font-qmedium`} style={[animatedTextStyle]}>
+      <Animated.Text className={`text-[${color}] text-sm font-mmedium`} style={[animatedTextStyle]}>
         {label}
       </Animated.Text>
       <View className="my-1.5" />

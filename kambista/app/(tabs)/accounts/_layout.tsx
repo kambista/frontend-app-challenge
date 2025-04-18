@@ -7,7 +7,7 @@ export default function UserLayout() {
       <Stack
         initialRouteName="index"
         screenOptions={{
-          contentStyle: { backgroundColor: 'white' },
+          contentStyle: { backgroundColor: '#f6f6f9' },
         }}
       >
         <Stack.Screen name="index" options={{ headerShown: false }} />

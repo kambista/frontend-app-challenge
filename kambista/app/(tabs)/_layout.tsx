@@ -45,7 +45,7 @@ export default function TabLayout() {
           options={{
             title: 'Historial',
             headerShown: false,
-            tabBarIcon: (props) => <TabIcon icon={'calendar'} {...props} />,
+            tabBarIcon: (props) => <TabIcon icon={'checklist'} {...props} />,
           }}
         />
         <Tabs.Screen
@@ -53,7 +53,7 @@ export default function TabLayout() {
           options={{
             title: 'Cuentas',
             headerShown: false,
-            tabBarIcon: (props) => <TabIcon icon={'person'} {...props} />,
+            tabBarIcon: (props) => <TabIcon icon={'credit-card'} {...props} />,
           }}
         />
         <Tabs.Screen
@@ -61,7 +61,7 @@ export default function TabLayout() {
           options={{
             title: 'Koinks',
             headerShown: false,
-            tabBarIcon: (props) => <TabIcon icon={'person'} {...props} />,
+            tabBarIcon: (props) => <TabIcon icon={'circle'} {...props} />,
           }}
         />
         <Tabs.Screen

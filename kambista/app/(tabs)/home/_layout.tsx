@@ -1,13 +1,13 @@
-import React from "react";
-import { Stack } from "expo-router";
+import React from 'react';
+import { Stack } from 'expo-router';
 
 export default function UserLayout() {
   return (
     <>
-      <Stack 
+      <Stack
         initialRouteName="index"
         screenOptions={{
-          contentStyle: { backgroundColor: "#f6f6f9" },
+          contentStyle: { backgroundColor: '#f6f6f9' },
         }}
       >
         <Stack.Screen name="index" options={{ headerShown: false }} />
