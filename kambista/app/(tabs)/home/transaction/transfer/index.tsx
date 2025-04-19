@@ -34,12 +34,12 @@ const History = () => {
         </View>
 
         <CardContainer className='mt-4'>
-          <View className="justify-center items-center">
-            <Image source={Images.Logo} className="w-48" resizeMode="contain" />
+          <View className="justify-center items-center my-6">
+            <Image source={Images.Wallet} className="w-48" resizeMode="contain" />
           </View>
 
           <Text className="font-mregular text-lg text-gray-800">
-            Transfiere desde tu app bancaria y guarda el número o código de operación para el siguiente paso.
+            Transfiere desde tu app bancaria y guarda el <Text className='font-msemibold underline'>número o código de operación</Text> para el siguiente paso.
           </Text>
 
           <View className="my-2" />

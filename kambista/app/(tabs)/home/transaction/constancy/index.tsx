@@ -61,8 +61,8 @@ const History = () => {
         <View className="my-4" />
 
         <CardContainer className="mt-4">
-          <View className="justify-center items-center">
-            <Image source={Images.Logo} className="w-48" resizeMode="contain" />
+          <View className="justify-center items-center my-6">
+            <Image source={Images.Receipt} className="w-48" resizeMode="contain" />
           </View>
 
           <Text className="font-mregular text-lg text-gray-800">Adjunta el comprobante de tu transferencia para poder verificar tu operación.</Text>
@@ -102,19 +102,19 @@ const History = () => {
 
           <View className="mt-6">
             <Text className="font-mregular text-gray-800 mb-2">Recuerda:</Text>
-            <View className="flex-row items-start mb-2">
+            <View className="flex-row items-start">
               <View className="bg-black aspect-square h-1 rounded-full m-2" />
               <Text className="font-mregular text-gray-800 flex-1">
-                El comprobante debe mostrar claramente el monto, datos del beneficiario, fecha y hora.
+                El voucher enviado debe tener el <Text className='font-msemibold'>monto, datos del beneficiario, fecha y hora.</Text>
               </Text>
-            </View>
-            <View className="flex-row items-start mb-2">
-              <View className="bg-black aspect-square h-1 rounded-full m-2" />
-              <Text className="font-mregular text-gray-800 flex-1">La imagen debe ser clara y legible.</Text>
             </View>
             <View className="flex-row items-start">
               <View className="bg-black aspect-square h-1 rounded-full m-2" />
-              <Text className="font-mregular text-gray-800 flex-1">Asegúrate de que toda la información importante sea visible.</Text>
+              <Text className="font-mregular text-gray-800 flex-1">La voucher debe ser legible.</Text>
+            </View>
+            <View className="flex-row items-start">
+              <View className="bg-black aspect-square h-1 rounded-full m-2" />
+              <Text className="font-mregular text-gray-800 flex-1">Archivos permitidos <Text className='font-msemibold'>imágenes, word y PDF</Text></Text>
             </View>
           </View>
 

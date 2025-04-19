@@ -23,8 +23,8 @@ const History = () => {
         <View className="my-6" />
 
         <CardContainer>
-          <View className="justify-center items-center">
-            <Image source={Images.Logo} className="w-48" resizeMode="contain" />
+          <View className="justify-center items-center my-8">
+            <Image source={Images.Pig} className="w-48" resizeMode="contain" />
           </View>
 
           <Text className="font-mbold text-2xl self-center">¡Constancia enviada!</Text>
@@ -46,18 +46,17 @@ const History = () => {
           <View className="my-2" />
         </CardContainer>
 
-        <TouchableOpacity className="justify-center items-center">
-          <Image source={Images.Logo} className="w-48" resizeMode="contain" />
+        <TouchableOpacity className="justify-center items-center w-full my-4">
+          <Image source={Images.BannerDiscount} className="w-full rounded-xl" />
         </TouchableOpacity>
 
-        <Text className="font-mregular self-center">Verificaremos tu operación. Puedes ver su estado en "Mis Operaciones"</Text>
+        <Text className="font-mregular self-center text-center">Verificaremos tu operación. Puedes ver su estado en "Mis Operaciones"</Text>
         <View className="my-4" />
 
         <TouchableOpacity onPress={navigateToHome} className="w-full py-5 rounded-xl bg-primary">
           <Text className="text-center text-lg font-msemibold">VOLVER A INICIO</Text>
         </TouchableOpacity>
 
-        <View className="my-16" />
       </ScrollView>
     </SafeAreaView>
   );
