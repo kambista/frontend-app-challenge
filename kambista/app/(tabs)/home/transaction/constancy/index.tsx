@@ -8,6 +8,7 @@ import Stepper from '@/components/Stepper';
 import Header from '@/components/Header';
 import Images from '@/constants/Images';
 import { Octicons, MaterialIcons } from '@expo/vector-icons';
+import CardContainer from '@/components/CardContainer';
 
 const History = () => {
   const [selectedFile, setSelectedFile] = useState<{
@@ -50,7 +51,7 @@ const History = () => {
   return (
     <SafeAreaView className="min-h-screen">
       <ScrollView className="px-6 py-2">
-        <Header title="Completa los datos" />
+        <Header title="Envía tu constancia" />
         <View className="my-2" />
 
         <View className="w-[85%] self-center">
@@ -59,28 +60,22 @@ const History = () => {
 
         <View className="my-4" />
 
-        <View className="bg-white rounded-xl flex flex-column px-8 py-4">
+        <CardContainer className="mt-4">
           <View className="justify-center items-center">
             <Image source={Images.Logo} className="w-48" resizeMode="contain" />
           </View>
 
-          <Text className="font-mregular text-lg text-gray-800">
-            Adjunta el comprobante de tu transferencia para poder verificar tu operación.
-          </Text>
+          <Text className="font-mregular text-lg text-gray-800">Adjunta el comprobante de tu transferencia para poder verificar tu operación.</Text>
 
-          <View className="border border-gray-300 rounded-lg py-4 px-5 mt-4">
+          <CardContainer className="mt-4">
             <Text className="font-mmedium text-md text-black">Sube la imagen de tu comprobante</Text>
-            
+
             {selectedFile ? (
               <View className="mt-4">
                 <View className="border border-gray-300 rounded-lg p-3 bg-gray-50">
                   <View className="flex-row justify-between items-center">
                     <View className="flex-row items-center flex-1">
-                      <MaterialIcons 
-                        name="image" 
-                        size={24} 
-                        color="#4B5563" 
-                      />
+                      <MaterialIcons name="image" size={24} color="#4B5563" />
                       <Text className="font-mmedium ml-2 flex-1" numberOfLines={1}>
                         {selectedFile.name}
                       </Text>
@@ -90,14 +85,10 @@ const History = () => {
                     </TouchableOpacity>
                   </View>
                 </View>
-                <Image 
-                  source={{ uri: selectedFile.uri }} 
-                  className="w-full h-40 mt-2 rounded-lg"
-                  resizeMode="contain"
-                />
+                <Image source={{ uri: selectedFile.uri }} className="w-full h-40 mt-2 rounded-lg" resizeMode="contain" />
               </View>
             ) : (
-              <TouchableOpacity 
+              <TouchableOpacity
                 onPress={selectImage}
                 className="font-mmedium border border-gray-300 rounded-lg py-4 my-2 px-5 bg-white flex flex-row justify-between items-center"
               >
@@ -105,47 +96,39 @@ const History = () => {
                 <Octicons name="upload" size={20} color="#4B5563" />
               </TouchableOpacity>
             )}
-            
-            <Text className="font-mmedium text-md text-black mt-2">
-              *Formatos permitidos: JPG, PNG
-            </Text>
-          </View>
+
+            <Text className="font-mmedium text-md text-black mt-2">*Formatos permitidos: JPG, PNG</Text>
+          </CardContainer>
 
           <View className="mt-6">
             <Text className="font-mregular text-gray-800 mb-2">Recuerda:</Text>
             <View className="flex-row items-start mb-2">
-              <MaterialIcons name="check-circle" size={16} color="#10B981" style={{ marginTop: 2, marginRight: 8 }} />
+              <View className="bg-black aspect-square h-1 rounded-full m-2" />
               <Text className="font-mregular text-gray-800 flex-1">
                 El comprobante debe mostrar claramente el monto, datos del beneficiario, fecha y hora.
               </Text>
             </View>
             <View className="flex-row items-start mb-2">
-              <MaterialIcons name="check-circle" size={16} color="#10B981" style={{ marginTop: 2, marginRight: 8 }} />
-              <Text className="font-mregular text-gray-800 flex-1">
-                La imagen debe ser clara y legible.
-              </Text>
+              <View className="bg-black aspect-square h-1 rounded-full m-2" />
+              <Text className="font-mregular text-gray-800 flex-1">La imagen debe ser clara y legible.</Text>
             </View>
             <View className="flex-row items-start">
-              <MaterialIcons name="check-circle" size={16} color="#10B981" style={{ marginTop: 2, marginRight: 8 }} />
-              <Text className="font-mregular text-gray-800 flex-1">
-                Asegúrate de que toda la información importante sea visible.
-              </Text>
+              <View className="bg-black aspect-square h-1 rounded-full m-2" />
+              <Text className="font-mregular text-gray-800 flex-1">Asegúrate de que toda la información importante sea visible.</Text>
             </View>
           </View>
 
           <View className="my-4" />
-        </View>
+        </CardContainer>
 
         <View className="my-4" />
 
-        <TouchableOpacity 
-          onPress={navigateToFinishTransaction} 
+        <TouchableOpacity
+          onPress={navigateToFinishTransaction}
           className={`w-full py-5 rounded-xl ${selectedFile ? 'bg-primary' : 'bg-gray-300'}`}
           disabled={!selectedFile}
         >
-          <Text className="text-center text-lg font-msemibold">
-            ENVIAR COMPROBANTE
-          </Text>
+          <Text className="text-center text-lg font-msemibold">ENVIAR COMPROBANTE</Text>
         </TouchableOpacity>
 
         <View className="my-16" />

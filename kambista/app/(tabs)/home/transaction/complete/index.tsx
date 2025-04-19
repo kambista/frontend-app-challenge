@@ -13,6 +13,7 @@ import SelectSourceDrawer from '@/components/drawers/SelectSourceDrawer';
 import SelectAccountDrawer from '@/components/drawers/SelectAccountDrawer';
 import { Account, Bank, SourceFund } from '@/models';
 import useTransaction from '@/hooks/useTransaction';
+import CardContainer from '@/components/CardContainer';
 
 const History = () => {
   const [bank, setBank] = useState<Bank>();
@@ -70,7 +71,7 @@ const History = () => {
 
         <View className="my-3" />
 
-        <View className="bg-white rounded-xl flex flex-column px-8 py-4">
+        <CardContainer>
           <View className="flex flex-row justify-between">
             <Text className="font-mmedium text-gray-800">Tú envías</Text>
             <Text className="font-mbold text-black">
@@ -94,7 +95,7 @@ const History = () => {
             <Text className="font-mbold text-gray-800">Tipo de cambio utilizado</Text>
             <Text className="font-mbold text-black">{calculatorResponse?.rate}</Text>
           </View>
-        </View>
+        </CardContainer>
 
         <View className="my-2" />
 

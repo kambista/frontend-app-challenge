@@ -7,6 +7,7 @@ import Stepper from '@/components/Stepper';
 import Header from '@/components/Header';
 import Images from '@/constants/Images';
 import useTransaction from '@/hooks/useTransaction';
+import CardContainer from '@/components/CardContainer';
 
 const History = () => {
   const { calculatorRequest, calculatorResponse, resetTransaction } = useTransaction();
@@ -21,7 +22,7 @@ const History = () => {
       <ScrollView className="px-6 py-2">
         <View className="my-6" />
 
-        <View className="bg-white rounded-xl flex flex-column px-8 py-4">
+        <CardContainer>
           <View className="justify-center items-center">
             <Image source={Images.Logo} className="w-48" resizeMode="contain" />
           </View>
@@ -43,7 +44,7 @@ const History = () => {
           <Text className="font-mmedium text-sm text-gray-800">Tiempo estimado de espera</Text>
           <Text className="font-mbold text-lg mb-2">20h 15m</Text>
           <View className="my-2" />
-        </View>
+        </CardContainer>
 
         <TouchableOpacity className="justify-center items-center">
           <Image source={Images.Logo} className="w-48" resizeMode="contain" />

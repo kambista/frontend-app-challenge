@@ -7,6 +7,7 @@ import { TransactionStepper } from '@/constants/Steppers';
 import { router } from 'expo-router';
 import Images from '@/constants/Images';
 import useTransaction from '@/hooks/useTransaction';
+import CardContainer from '@/components/CardContainer';
 
 const History = () => {
   const { calculatorRequest } = useTransaction();
@@ -19,20 +20,20 @@ const History = () => {
     <SafeAreaView className="min-h-screen">
       <ScrollView className="px-6 py-2">
         <Header title="Completa los datos" />
-        <View className="my-2" />
+        <View className="my-3" />
 
         <View className="w-[85%] self-center">
           <Stepper steps={TransactionStepper} activeStep={1} />
         </View>
 
-        <View className="my-3" />
+        <View className="my-5" />
 
         <View className="flex flex-row justify-between items-center">
           <Text className="font-mmedium text-sm text-gray-800">El tipo de cambio podría actualizarse a las:</Text>
           <Text className="font-msemibold text-xl text-gray-800">13:15</Text>
         </View>
 
-        <View className="bg-white rounded-xl flex flex-column px-8 py-4">
+        <CardContainer className='mt-4'>
           <View className="justify-center items-center">
             <Image source={Images.Logo} className="w-48" resizeMode="contain" />
           </View>
@@ -43,7 +44,7 @@ const History = () => {
 
           <View className="my-2" />
 
-          <View className="border border-gray-300 rounded-lg py-4 px-5">
+          <CardContainer className='w-[90%] self-center'>
             <Text className="font-mmedium text-sm text-gray-800">Banco</Text>
             <Text className="font-mbold text-black mb-2">Interbank</Text>
 
@@ -63,9 +64,9 @@ const History = () => {
 
             <Text className="font-mmedium text-sm text-gray-800">Tipo de cuenta</Text>
             <Text className="font-mbold text-black">Corriente</Text>
-          </View>
+          </CardContainer>
           <View className="my-2" />
-        </View>
+        </CardContainer>
 
         <View className="my-4" />
 
