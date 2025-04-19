@@ -1,21 +1,28 @@
-import { Users } from '@/constants/Backend';
+import { User } from '@/models';
 import AuthService from '@/services/authService';
 import { useAuthStore } from '@/store/authStore';
-import { Logger } from '@/utils/logger';
-import { useState } from 'react';
 
 const useAuth = () => {
-  const [loading, setLoading] = useState(false);
+  const { login: loginStore, logout: logoutStore, userData } = useAuthStore();
 
-  const { login: loginStore, logout: logoutStore } = useAuthStore();
+  const register = (user: User) => {
+    try {
+      const response = AuthService.register(user);
+      if (response.success) {
+        const payload = { email: user.email, password: user.password };
+        return login(payload);
+      }
+    } catch (err) {
+      console.error('Error', err);
+    }
+  };
 
   const login = (values: { email: string; password: string }) => {
-    setLoading(true);
     try {
-      const userExists = Users.some((user) => user.email === values.email && user.password === values.password);
-
-      if (userExists) {
-        loginStore(userExists, 'token');
+      const response = AuthService.login(values);
+      console.log(response);
+      if (response.success) {
+        loginStore(response.data, 'token');
         return true;
       } else {
         return false;
@@ -24,7 +31,6 @@ const useAuth = () => {
       console.error('ERROR', err);
       return false;
     } finally {
-      setLoading(false);
     }
   };
 
@@ -32,7 +38,7 @@ const useAuth = () => {
     logoutStore();
   };
 
-  return { login, logout, loading };
+  return { login, logout, register, userData };
 };
 
 export default useAuth;

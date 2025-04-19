@@ -25,6 +25,12 @@ export interface Currency {
 
 export interface User {
   id: number;
+  fullname: string;
   email: string;
   password: string;
+  document_id: number;
+  document_number: number;
+  phone_number: number;
+  birthdate: string;
+  last_bank_id?: number;
 }

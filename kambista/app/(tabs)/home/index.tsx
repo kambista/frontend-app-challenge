@@ -23,7 +23,7 @@ const Home = () => {
   const [isCouponValid, setIsCouponValid] = useState<boolean | undefined>(undefined);
 
   const { forceShowTabBar } = useUI();
-  const { startTransaction, calculatorResponse, setCoupon : setCouponStore } = useTransaction();
+  const { startTransaction, calculatorResponse, setCoupon: setCouponStore } = useTransaction();
 
   const fetchExchangeRate = async () => {
     try {
@@ -43,7 +43,7 @@ const Home = () => {
         active: 'S',
       };
       const data = await ExchangeService.calculate(payload);
-      if(coupon) setCouponStore(coupon)
+      if (coupon) setCouponStore(coupon);
       startTransaction(payload, data);
     } catch (error) {
       Logger.log(error);
@@ -153,20 +153,18 @@ const Home = () => {
                     placeholder="0.00"
                   />
                 </View>
-                <Picker
-                  selectedValue={originCurrency}
-                  onValueChange={(value) => changeCurrency('origin', value)}
-                  style={{
-                    width: 120,
-                    backgroundColor: 'black',
-                    color: 'white', // Texto blanco para contraste
-                  }}
-                  dropdownIconColor="white" // Color del ícono del dropdown
-                >
-                  {currencies.map((cur) => (
-                    <Picker.Item key={cur.id} label={cur.name} value={cur.code} />
-                  ))}
-                </Picker>
+                <View className="w-36 bg-black rounded-r-xl">
+                  <Picker
+                    selectedValue={originCurrency}
+                    onValueChange={(value) => changeCurrency('origin', value)}
+                    style={{ height: 70, color: 'white' }}
+                    dropdownIconColor="white" // Color del ícono del dropdown
+                  >
+                    {currencies.map((cur) => (
+                      <Picker.Item key={cur.id} label={cur.name} value={cur.code} />
+                    ))}
+                  </Picker>
+                </View>
               </View>
 
               <View className="flex flex-row my-5">
@@ -174,20 +172,18 @@ const Home = () => {
                   <Text className="font-mmedium">Entonces recibes</Text>
                   <Text className="font-mbold text-xl pl-3 h-8">{calculatorResponse?.exchange || 0}</Text>
                 </View>
-                <Picker
-                  selectedValue={destinationCurrency}
-                  onValueChange={(value) => changeCurrency('destination', value)}
-                  style={{
-                    width: 120,
-                    backgroundColor: 'black',
-                    color: 'white', // Texto blanco para contraste
-                  }}
-                  dropdownIconColor="white" // Color del ícono del dropdown
-                >
-                  {currencies.map((cur) => (
-                    <Picker.Item key={cur.id} label={cur.name} value={cur.code} />
-                  ))}
-                </Picker>
+                <View className="w-36 bg-black rounded-r-xl">
+                  <Picker
+                    selectedValue={destinationCurrency}
+                    onValueChange={(value) => changeCurrency('destination', value)}
+                    style={{ height: 70, color: 'white' }}
+                    dropdownIconColor="white" // Color del ícono del dropdown
+                  >
+                    {currencies.map((cur) => (
+                      <Picker.Item key={cur.id} label={cur.name} value={cur.code} />
+                    ))}
+                  </Picker>
+                </View>
               </View>
             </View>
 

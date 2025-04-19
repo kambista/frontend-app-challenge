@@ -137,10 +137,37 @@ export const Users: User[] = [
     id: 1,
     email: 'edu@gmail.com',
     password: '12345678',
+    document_id: 1,
+    document_number: 12345678,
+    phone_number: 987654321,
+    birthdate: '1990-05-15',
+    last_bank_id: 1,
+    fullname: 'Eduardo Ramón',
   },
   {
     id: 2,
-    email: 'ejemplo@gmail.com',
+    email: 'andyv@gmail.com',
     password: '12345678',
+    document_id: 1,
+    document_number: 87654321,
+    phone_number: 912345678,
+    birthdate: '1985-11-22',
+    last_bank_id: 2,
+    fullname: 'Andy V',
+  },
+];
+
+export const Documents: { id: number; name: string }[] = [
+  {
+    id: 1,
+    name: 'DNI',
+  },
+  {
+    id: 2,
+    name: 'Pasaporte',
+  },
+  {
+    id: 3,
+    name: 'Carné de extranjería',
   },
 ];
