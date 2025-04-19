@@ -20,7 +20,6 @@ const useAuth = () => {
   const login = (values: { email: string; password: string }) => {
     try {
       const response = AuthService.login(values);
-      console.log(response);
       if (response.success) {
         loginStore(response.data, 'token');
         return true;

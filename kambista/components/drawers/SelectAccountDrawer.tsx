@@ -1,8 +1,10 @@
 import { Text, TouchableOpacity, View } from 'react-native';
-import React, { forwardRef, useCallback, useMemo } from 'react';
-import { BottomSheetBackdrop, BottomSheetModal, BottomSheetScrollView } from '@gorhom/bottom-sheet';
+import React, { forwardRef, useCallback, useMemo, useRef } from 'react';
+import { BottomSheetBackdrop, BottomSheetModal, BottomSheetScrollView, useBottomSheetModal } from '@gorhom/bottom-sheet';
 import { Accounts } from '@/constants/Backend';
 import { Octicons } from '@expo/vector-icons';
+import { Account } from '@/models';
+import CreateAccountDrawer from './CreateAccountDrawer';
 
 export type Ref = BottomSheetModal;
 
@@ -19,8 +21,18 @@ const SelectAccountDrawer = forwardRef<Ref, SelectAccountDrawerProps>((props, re
     props.onAccountSelected(sourceFund);
   };
 
+  const { dismiss } = useBottomSheetModal();
+
+  const createAccountDrawerRef = useRef<BottomSheetModal>(null);
+  const handlePresentCreateAccountDrawer = () => createAccountDrawerRef.current?.present();
+  const handleAccountCreate = async (account: Account) => {
+    // setAccount(account);
+    dismiss();
+  };
+
   return (
     <BottomSheetModal ref={ref} index={0} snapPoints={snapPoints} backdropComponent={renderBackdrop} enableDynamicSizing={false}>
+      <CreateAccountDrawer ref={createAccountDrawerRef} onAccountSelected={handleAccountCreate}/>
       <BottomSheetScrollView
         contentContainerStyle={{
           paddingTop: 16,
@@ -51,7 +63,7 @@ const SelectAccountDrawer = forwardRef<Ref, SelectAccountDrawerProps>((props, re
           );
         })}
 
-        <TouchableOpacity className="bg-white rounded-3xl mb-4 px-6 w-full flex flex-row" onPress={() => {}}>
+        <TouchableOpacity className="bg-white rounded-3xl mb-4 px-6 w-full flex flex-row" onPress={handlePresentCreateAccountDrawer}>
           <Octicons name="plus" size={24} />
           <Text className="ml-6 self-start font-mregular text-black">Agregar cuenta</Text>
         </TouchableOpacity>
