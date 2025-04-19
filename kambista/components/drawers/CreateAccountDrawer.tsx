@@ -9,6 +9,7 @@ import Checkbox from '../CheckBox';
 import { Picker } from '@react-native-picker/picker';
 import { TextInput } from 'react-native-gesture-handler';
 import { Logger } from '@/utils/logger';
+import InfoCard from '../InfoCard';
 
 export type Ref = BottomSheetModal;
 
@@ -98,6 +99,8 @@ const CreateAccountDrawer = forwardRef<Ref, CreateAccountDrawerProps>((props, re
           </View>
           {formik.touched.entity && formik.errors.entity && <Text className="text-red-500 text-xs mt-1 font-mmedium">{formik.errors.entity}</Text>}
         </View>
+
+        <InfoCard content={'Operamos en Lima con todos los bancos. Y en provincia con el BCP y cuentas digitales Interbank.'} />
 
         {/* Tipo de moneda */}
         <View className="mb-4 w-full">

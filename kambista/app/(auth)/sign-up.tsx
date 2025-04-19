@@ -13,6 +13,7 @@ import Checkbox from '@/components/CheckBox';
 import { router } from 'expo-router';
 import { MaterialIcons } from '@expo/vector-icons';
 import useAuth from '@/hooks/useAuth';
+import InfoCard from '@/components/InfoCard';
 
 // Esquema de validación
 const SignUpSchema = Yup.object().shape({
@@ -142,7 +143,9 @@ const SignUp = () => {
                   onChangeText={formik.handleChange('name')}
                   onBlur={formik.handleBlur('name')}
                 />
-                {formik.touched.fullname && formik.errors.fullname && <Text className="text-red-500 text-xs mt-1 font-mmedium">{formik.errors.fullname}</Text>}
+                {formik.touched.fullname && formik.errors.fullname && (
+                  <Text className="text-red-500 text-xs mt-1 font-mmedium">{formik.errors.fullname}</Text>
+                )}
               </View>
 
               {/* Campo: DNI */}
@@ -231,11 +234,9 @@ const SignUp = () => {
               </View>
             </View>
 
-            <View className="bg-blue-100 rounded-xl flex flex-column px-8 py-4 mb-4">
-              <Text className="font-mregular text-sm text-blue-900">
-                Tu documento de identidad debe coincidir con tus datos para evitar inconvenientes al momento de hacer una primera operación.
-              </Text>
-            </View>
+            <InfoCard
+              content={'Tu documento de identidad debe coincidir con tus datos para evitar inconvenientes al momento de hacer una primera operación.'}
+            />
 
             {/* Lugar de cambio anterior */}
             <View className="mb-4">

@@ -14,6 +14,7 @@ import SelectAccountDrawer from '@/components/drawers/SelectAccountDrawer';
 import { Account, Bank, SourceFund } from '@/models';
 import useTransaction from '@/hooks/useTransaction';
 import CardContainer from '@/components/CardContainer';
+import InfoCard from '@/components/InfoCard';
 
 const History = () => {
   const [bank, setBank] = useState<Bank>();
@@ -86,7 +87,7 @@ const History = () => {
           </View>
           <View className="flex flex-row justify-between">
             <Text className="font-mmedium text-gray-800">Cupón aplicado</Text>
-            <Text className="font-mbold text-black">{coupon || "-"}</Text>
+            <Text className="font-mbold text-black">{coupon || '-'}</Text>
           </View>
 
           <View className="flex-1 h-px bg-gray-300 my-2" />
@@ -99,11 +100,7 @@ const History = () => {
 
         <View className="my-2" />
 
-        <View className="bg-blue-100 rounded-xl flex flex-column px-8 py-4">
-          <Text className="font-mlight text-black">
-            Tiempo estimado de espera BCP, Interbank, BanBif, Pichincha: 15 minutos. Otros bancos: 1 día hábil.
-          </Text>
-        </View>
+        <InfoCard content={'Tiempo estimado de espera **BCP, Interbank, BanBif, Pichincha:** 15 minutos. **Otros bancos:** 1 día hábil.'} />
 
         <View className="my-2" />
 
@@ -128,11 +125,11 @@ const History = () => {
         </TouchableOpacity>
 
         <View className="my-2" />
-        <View className="bg-orange-100 rounded-xl flex flex-column px-8 py-4">
-          <Text className="font-mlight text-black">
-            Recuerda que las cuentas deben estar a tu nombre. Kambista no transfiere a cuentas de terceros.
-          </Text>
-        </View>
+
+        <InfoCard
+          color="orange"
+          content={'Recuerda que las cuentas deben estar **a tu nombre**. Kambista no transfiere a **cuentas de terceros**.'}
+        />
 
         <View className="my-4" />
 
