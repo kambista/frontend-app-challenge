@@ -15,26 +15,88 @@ import { MaterialIcons } from '@expo/vector-icons';
 import useAuth from '@/hooks/useAuth';
 import InfoCard from '@/components/InfoCard';
 
-// Esquema de validación
+// Función para calcular edad
+const calculateAge = (birthDate: Date) => {
+  const today = new Date();
+  let age = today.getFullYear() - birthDate.getFullYear();
+  const monthDiff = today.getMonth() - birthDate.getMonth();
+  
+  if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
+    age--;
+  }
+  
+  return age;
+};
+
+// Esquema de validación mejorado
 const SignUpSchema = Yup.object().shape({
-  email: Yup.string().email('Correo inválido').required('Campo requerido'),
-  password: Yup.string().min(6, 'Mínimo 6 caracteres').required('Campo requerido'),
-  name: Yup.string().required('Campo requerido'),
-  documentType: Yup.number().required('Seleccione un tipo de documento'),
-  documentNumber: Yup.string().required('Campo requerido').min(6, 'Mínimo 6 caracteres'),
-  phone: Yup.string()
+  email: Yup.string()
+    .email('Correo inválido')
     .required('Campo requerido')
-    .matches(/^[0-9]+$/, 'Solo números permitidos'),
-  birthDate: Yup.date().required('Campo requerido').max(new Date(), 'La fecha no puede ser futura'),
+    .matches(/^[^\s@]+@[^\s@]+\.[^\s@]+$/, 'Formato de email incorrecto'),
+  
+  password: Yup.string()
+    .min(6, 'Mínimo 6 caracteres')
+    .required('Campo requerido'),
+  
+  fullname: Yup.string()
+    .required('Campo requerido')
+    .matches(/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/, 'No se permiten números ni caracteres especiales'),
+  
+  document_id: Yup.number()
+    .required('Seleccione un tipo de documento')
+    .min(1, 'Seleccione un tipo de documento'),
+  
+  document_number: Yup.string()
+    .required('Campo requerido')
+    .when('document_id', {
+      is: 1, // DNI
+      then: (schema) => schema
+        .matches(/^[0-9]{8}$/, 'DNI debe tener 8 dígitos')
+        .length(8, 'DNI debe tener exactamente 8 dígitos'),
+    })
+    .when('document_id', {
+      is: 2, // CE
+      then: (schema) => schema
+        .matches(/^[0-9]{9}$/, 'CE debe tener 9 dígitos')
+        .length(9, 'CE debe tener exactamente 9 dígitos'),
+    })
+    .when('document_id', {
+      is: 3, // Pasaporte
+      then: (schema) => schema
+        .matches(/^[a-zA-Z0-9]{8,15}$/, 'Pasaporte debe tener entre 8 y 15 caracteres alfanuméricos')
+        .min(8, 'Mínimo 8 caracteres')
+        .max(15, 'Máximo 15 caracteres'),
+    }),
+  
+  phone_number: Yup.string()
+    .required('Campo requerido')
+    .matches(/^[0-9]{9}$/, 'Debe tener exactamente 9 dígitos')
+    .length(9, 'Debe tener exactamente 9 dígitos'),
+  
+  birthdate: Yup.date()
+    .required('Campo requerido')
+    .max(new Date(), 'La fecha no puede ser futura')
+    .test('is-adult', 'Debes ser mayor de edad', (value) => {
+      return calculateAge(value) >= 18;
+    }),
+  
   previousExchange: Yup.number().nullable(),
-  termsAccepted: Yup.boolean().oneOf([true], 'Debes aceptar los términos y condiciones').required('Debes aceptar los términos y condiciones'),
-  privacyPolicyAccepted: Yup.boolean().oneOf([true], 'Debes aceptar la política de privacidad').required('Debes aceptar la política de privacidad'),
+  
+  termsAccepted: Yup.boolean()
+    .oneOf([true], 'Debes aceptar los términos y condiciones')
+    .required('Debes aceptar los términos y condiciones'),
+  
+  privacyPolicyAccepted: Yup.boolean()
+    .oneOf([true], 'Debes aceptar la política de privacidad')
+    .required('Debes aceptar la política de privacidad'),
 });
 
 const SignUp = () => {
   const [showPassword, setShowPassword] = useState(true);
   const [showDatePicker, setShowDatePicker] = useState(false);
   const { register } = useAuth();
+
   const navigateToSignUpFinish = () => {
     router.push('/(auth)/sign-up-finish');
   };
@@ -43,10 +105,11 @@ const SignUp = () => {
     try {
       const payload = {
         ...values,
-        birthDate: values.birthDate.toISOString().split('T')[0], // Formato YYYY-MM-DD
+        birthdate: values.birthdate.toISOString().split('T')[0], // Formato YYYY-MM-DD
       };
+      Logger.log('REGISTRANDO');
       const success = register(payload);
-      if (success) {
+      if (success == true) {
         navigateToSignUpFinish();
       } else {
         Logger.log('Error registrando');
@@ -54,7 +117,6 @@ const SignUp = () => {
     } catch (error) {
       Logger.log(error);
     }
-    navigateToSignUpFinish();
   };
 
   const formik = useFormik({
@@ -62,17 +124,51 @@ const SignUp = () => {
       email: '',
       password: '',
       fullname: '',
-      documentType: -1,
-      documentNumber: '',
-      phone: '',
-      birthDate: new Date(),
+      document_id: -1,
+      document_number: '',
+      phone_number: '',
+      birthdate: new Date(new Date().setFullYear(new Date().getFullYear() - 18)), // Default a 18 años atrás
       previousExchange: -1,
       termsAccepted: false,
       privacyPolicyAccepted: false,
     },
     validationSchema: SignUpSchema,
     onSubmit: handleSubmit,
+    validateOnBlur: true,
+    validateOnChange: true,
   });
+
+  // Función para manejar cambios en el número de documento con validación en tiempo real
+  const handleDocumentNumberChange = (text: string) => {
+    // Validación básica según tipo de documento
+    if (formik.values.document_id === 1) { // DNI
+      const cleanedValue = text.replace(/[^0-9]/g, '').slice(0, 8);
+      formik.setFieldValue('document_number', cleanedValue);
+    } else if (formik.values.document_id === 2) { // CE
+      const cleanedValue = text.replace(/[^0-9]/g, '').slice(0, 9);
+      formik.setFieldValue('document_number', cleanedValue);
+    } else if (formik.values.document_id === 3) { // Pasaporte
+      const cleanedValue = text.replace(/[^a-zA-Z0-9]/g, '').slice(0, 15);
+      formik.setFieldValue('document_number', cleanedValue);
+    } else {
+      formik.setFieldValue('document_number', text);
+    }
+    formik.setFieldTouched('document_number', true, false);
+  };
+
+  // Función para manejar cambios en el nombre (solo letras y espacios)
+  const handleNameChange = (text: string) => {
+    const cleanedValue = text.replace(/[^a-zA-ZáéíóúÁÉÍÓÚñÑ\s]/g, '');
+    formik.setFieldValue('fullname', cleanedValue);
+    formik.setFieldTouched('fullname', true, false);
+  };
+
+  // Función para manejar cambios en el teléfono (solo números y máximo 9)
+  const handlePhoneChange = (text: string) => {
+    const cleanedValue = text.replace(/[^0-9]/g, '').slice(0, 9);
+    formik.setFieldValue('phone_number', cleanedValue);
+    formik.setFieldTouched('phone_number', true, false);
+  };
 
   return (
     <SafeAreaView className="bg-white h-full">
@@ -103,7 +199,9 @@ const SignUp = () => {
                   onChangeText={formik.handleChange('email')}
                   onBlur={formik.handleBlur('email')}
                 />
-                {formik.touched.email && formik.errors.email && <Text className="text-red-500 text-xs mt-1 font-mmedium">{formik.errors.email}</Text>}
+                {formik.touched.email && formik.errors.email && (
+                  <Text className="text-red-500 text-xs mt-1 font-mmedium">{formik.errors.email}</Text>
+                )}
               </View>
 
               {/* Campo: Contraseña */}
@@ -140,8 +238,8 @@ const SignUp = () => {
                   className={`font-mmedium border rounded-lg py-4 pl-5 ${
                     formik.touched.fullname && formik.errors.fullname ? 'border-red-500' : 'border-gray-300'
                   }`}
-                  onChangeText={formik.handleChange('name')}
-                  onBlur={formik.handleBlur('name')}
+                  onChangeText={handleNameChange}
+                  onBlur={formik.handleBlur('fullname')}
                 />
                 {formik.touched.fullname && formik.errors.fullname && (
                   <Text className="text-red-500 text-xs mt-1 font-mmedium">{formik.errors.fullname}</Text>
@@ -154,31 +252,45 @@ const SignUp = () => {
                 <View className="flex flex-row gap-4">
                   <View
                     className={`w-32 border rounded-lg ${
-                      formik.touched.documentType && formik.errors.documentType ? 'border-red-500' : 'border-gray-300'
+                      formik.touched.document_id && formik.errors.document_id ? 'border-red-500' : 'border-gray-300'
                     }`}
                   >
-                    <Picker selectedValue={formik.values.documentType} onValueChange={(value) => formik.setFieldValue('documentType', value)}>
-                      <Picker.Item key={-1} label={'Seleccione un valor'} value={-1} color="#828282" />
+                    <Picker 
+                      selectedValue={formik.values.document_id} 
+                      onValueChange={(value) => {
+                        formik.setFieldValue('document_id', value);
+                        formik.setFieldValue('document_number', ''); // Resetear número al cambiar tipo
+                      }}
+                    >
+                      <Picker.Item key={-1} label={'Seleccione'} value={-1} color="#828282" />
                       {Documents.map((cur) => (
                         <Picker.Item key={cur.id} label={cur.name} value={cur.id} />
                       ))}
                     </Picker>
                   </View>
                   <TextInput
-                    placeholder="N de documento"
-                    value={formik.values.documentNumber}
+                    placeholder={
+                      formik.values.document_id === 1 ? '8 dígitos' : 
+                      formik.values.document_id === 2 ? '9 dígitos' : 
+                      formik.values.document_id === 3 ? '8-15 caracteres' : 
+                      'N de documento'
+                    }
+                    value={formik.values.document_number}
+                    keyboardType={
+                      formik.values.document_id === 3 ? 'default' : 'numeric'
+                    }
                     className={`flex-1 font-mmedium border rounded-lg py-4 pl-5 ${
-                      formik.touched.documentNumber && formik.errors.documentNumber ? 'border-red-500' : 'border-gray-300'
+                      formik.touched.document_number && formik.errors.document_number ? 'border-red-500' : 'border-gray-300'
                     }`}
-                    onChangeText={formik.handleChange('documentNumber')}
-                    onBlur={formik.handleBlur('documentNumber')}
+                    onChangeText={handleDocumentNumberChange}
+                    onBlur={formik.handleBlur('document_number')}
                   />
                 </View>
-                {formik.touched.documentType && formik.errors.documentType && (
-                  <Text className="text-red-500 text-xs mt-1 font-mmedium">{formik.errors.documentType}</Text>
+                {formik.touched.document_id && formik.errors.document_id && (
+                  <Text className="text-red-500 text-xs mt-1 font-mmedium">{formik.errors.document_id}</Text>
                 )}
-                {formik.touched.documentNumber && formik.errors.documentNumber && (
-                  <Text className="text-red-500 text-xs mt-1 font-mmedium">{formik.errors.documentNumber}</Text>
+                {formik.touched.document_number && formik.errors.document_number && (
+                  <Text className="text-red-500 text-xs mt-1 font-mmedium">{formik.errors.document_number}</Text>
                 )}
               </View>
 
@@ -188,17 +300,17 @@ const SignUp = () => {
                 <View className="flex-1">
                   <Text className="font-mmedium text-gray-700 mb-2">Celular</Text>
                   <TextInput
-                    placeholder="N° de celular"
-                    value={formik.values.phone}
+                    placeholder="9 dígitos"
+                    value={formik.values.phone_number}
                     keyboardType="phone-pad"
                     className={`font-mmedium border rounded-lg py-4 pl-5 ${
-                      formik.touched.phone && formik.errors.phone ? 'border-red-500' : 'border-gray-300'
+                      formik.touched.phone_number && formik.errors.phone_number ? 'border-red-500' : 'border-gray-300'
                     }`}
-                    onChangeText={formik.handleChange('phone')}
-                    onBlur={formik.handleBlur('phone')}
+                    onChangeText={handlePhoneChange}
+                    onBlur={formik.handleBlur('phone_number')}
                   />
-                  {formik.touched.phone && formik.errors.phone && (
-                    <Text className="text-red-500 text-xs mt-1 font-mmedium">{formik.errors.phone}</Text>
+                  {formik.touched.phone_number && formik.errors.phone_number && (
+                    <Text className="text-red-500 text-xs mt-1 font-mmedium">{formik.errors.phone_number}</Text>
                   )}
                 </View>
 
@@ -208,27 +320,27 @@ const SignUp = () => {
                   <TouchableOpacity
                     onPress={() => setShowDatePicker(true)}
                     className={`border rounded-lg py-4 pl-5 ${
-                      formik.touched.birthDate && formik.errors.birthDate ? 'border-red-500' : 'border-gray-300'
+                      formik.touched.birthdate && formik.errors.birthdate ? 'border-red-500' : 'border-gray-300'
                     }`}
                   >
-                    <Text className="font-mmedium">{formik.values.birthDate.toLocaleDateString('es-ES')}</Text>
+                    <Text className="font-mmedium">{formik.values.birthdate.toLocaleDateString('es-ES')}</Text>
                   </TouchableOpacity>
                   {showDatePicker && (
                     <DateTimePicker
-                      value={formik.values.birthDate}
+                      value={formik.values.birthdate}
                       mode="date"
                       display="default"
                       maximumDate={new Date()}
                       onChange={(event, date) => {
                         setShowDatePicker(false);
                         if (date) {
-                          formik.setFieldValue('birthDate', date);
+                          formik.setFieldValue('birthdate', date);
                         }
                       }}
                     />
                   )}
-                  {formik.touched.birthDate && formik.errors.birthDate && (
-                    <Text className="text-red-500 text-xs mt-1 font-mmedium">{formik.errors.birthDate}</Text>
+                  {formik.touched.birthdate && formik.errors.birthdate && (
+                    <Text className="text-red-500 text-xs mt-1 font-mmedium">{formik.errors.birthdate}</Text>
                   )}
                 </View>
               </View>
@@ -275,7 +387,11 @@ const SignUp = () => {
             )}
 
             <View className="my-4" />
-            <TouchableOpacity onPress={() => formik.handleSubmit()} className="w-full py-5 rounded-xl bg-primary">
+            <TouchableOpacity 
+              onPress={() => formik.handleSubmit()} 
+              className={`w-full py-5 rounded-xl ${formik.isValid ? 'bg-primary' : 'bg-gray-300'}`}
+              disabled={!formik.isValid}
+            >
               <Text className="text-center text-lg font-msemibold">REGISTRARME</Text>
             </TouchableOpacity>
             <View className="my-6" />

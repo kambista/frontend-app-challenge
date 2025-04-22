@@ -9,6 +9,7 @@ import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import { MaterialIcons } from '@expo/vector-icons';
 import useAuth from '@/hooks/useAuth';
+import { ShowError, ShowInfo } from '@/utils/toast';
 
 const LoginSchema = Yup.object({
   email: Yup.string().email('Correo inválido').required('Campo requerido'),
@@ -26,6 +27,7 @@ const SignIn = () => {
         Logger.log('Inicio de sesión satisfactorio.');
         navigateToHome();
       } else {
+        ShowError('Credenciales inválidas', 'Correo o contraseña incorrecta');
         Logger.log('Credenciales inválidas');
       }
     } catch (error: any) {
@@ -33,15 +35,21 @@ const SignIn = () => {
     }
   };
 
-  const formik = useFormik({
-    initialValues: { email: 'edu@gmail.com', password: '12345678' },
-    validationSchema: LoginSchema,
-    onSubmit: handleSubmit,
-  });
+  const workingOnIt = () => {
+    ShowInfo('🚧 Función en desarrollo', 'Esta funcionalidad estará disponible próximamente.');
+  };
 
   const navigateToHome = () => {
     router.replace('/home');
   };
+
+  const formik = useFormik({
+    initialValues: { email: 'edu@gmail.com', password: '12345678' },
+    validationSchema: LoginSchema,
+    onSubmit: handleSubmit,
+    validateOnBlur: true,
+    validateOnChange: true,
+  });
 
   return (
     <SafeAreaView className="bg-white h-full">
@@ -107,9 +115,9 @@ const SignIn = () => {
               <View className="flex">
                 <Text className="text-md text-gray-600 font-mmedium">Recordarme</Text>
               </View>
-              <Link href="/sign-up" className="text-md text-gray-600 font-mmedium underline">
-                ¿Olvidaste tu contraseña?
-              </Link>
+              <TouchableOpacity onPress={workingOnIt}>
+                <Text className="text-md text-gray-600 font-mmedium underline">¿Olvidaste tu contraseña?</Text>
+              </TouchableOpacity>
             </View>
 
             <View className="my-8" />

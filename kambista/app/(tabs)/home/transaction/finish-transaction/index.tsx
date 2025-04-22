@@ -8,6 +8,7 @@ import Header from '@/components/Header';
 import Images from '@/constants/Images';
 import useTransaction from '@/hooks/useTransaction';
 import CardContainer from '@/components/CardContainer';
+import { ShowInfo } from '@/utils/toast';
 
 const History = () => {
   const { calculatorRequest, calculatorResponse, resetTransaction } = useTransaction();
@@ -46,7 +47,12 @@ const History = () => {
           <View className="my-2" />
         </CardContainer>
 
-        <TouchableOpacity className="justify-center items-center w-full my-4">
+        <TouchableOpacity
+          onPress={() => {
+            ShowInfo('🔧 Trabajando en ello', 'Funcionalidad en desarrollo.');
+          }}
+          className="justify-center items-center w-full my-4"
+        >
           <Image source={Images.BannerDiscount} className="w-full rounded-xl" />
         </TouchableOpacity>
 
@@ -56,7 +62,6 @@ const History = () => {
         <TouchableOpacity onPress={navigateToHome} className="w-full py-5 rounded-xl bg-primary">
           <Text className="text-center text-lg font-msemibold">VOLVER A INICIO</Text>
         </TouchableOpacity>
-
       </ScrollView>
     </SafeAreaView>
   );

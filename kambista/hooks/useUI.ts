@@ -3,15 +3,7 @@ import { useFocusEffect } from 'expo-router';
 import { useCallback } from 'react';
 
 const useUI = () => {
-  const { showTabBar: showTabBarStore, hideTabBar: hideTabBarStore, isTabBarVisible } = useUIStore();
-
-  const showTabBar = () => {
-    showTabBarStore();
-  };
-
-  const hideTabBar = () => {
-    hideTabBarStore();
-  };
+  const { showTabBar, hideTabBar, isTabBarVisible } = useUIStore();
 
   const forceShowTabBar = () => {
     return useFocusEffect(

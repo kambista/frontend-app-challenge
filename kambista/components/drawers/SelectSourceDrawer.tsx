@@ -29,7 +29,7 @@ const SelectSourceDrawer = forwardRef<Ref, SelectSourceDrawerProps>((props, ref)
       >
         <Text className="self-center text-base font-mmedium">Origen de fondos</Text>
 
-        <View className="flex-1 h-px bg-gray-300 my-2" />
+        <View className="flex-1 w-full h-px bg-gray-300 my-4" />
 
         {SourceFunds.map((acc) => {
           return (

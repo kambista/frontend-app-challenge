@@ -6,8 +6,9 @@ import React, { useEffect } from 'react';
 import 'react-native-reanimated';
 import '../global.css';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
-import { NavigationContainer } from '@react-navigation/native';
 import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
+import Toast from 'react-native-toast-message';
+import { toastConfig } from '@/config/toastConfig';
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
@@ -49,6 +50,9 @@ export default function RootLayout() {
 
           <Stack.Screen name="+not-found" />
         </Stack>
+
+        <Toast config={toastConfig} />
+
         <StatusBar backgroundColor="white" style="dark" />
       </BottomSheetModalProvider>
     </GestureHandlerRootView>

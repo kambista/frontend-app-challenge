@@ -29,7 +29,7 @@ const SelectBankDrawer = forwardRef<Ref, SelectBankDrawerProps>((props, ref) => 
       >
         <Text className="self-center text-base font-mmedium">¿Desde que banco nos envias tu dinero?</Text>
 
-        <View className="flex-1 h-px bg-gray-300 my-2" />
+        <View className="flex-1 w-full h-px bg-gray-300 my-4" />
 
         {BankAccounts.map((acc) => {
           return (

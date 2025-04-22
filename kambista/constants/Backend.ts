@@ -164,10 +164,10 @@ export const Documents: { id: number; name: string }[] = [
   },
   {
     id: 2,
-    name: 'Pasaporte',
+    name: 'CE',
   },
   {
     id: 3,
-    name: 'Carné de extranjería',
+    name: 'Pasaporte',
   },
 ];

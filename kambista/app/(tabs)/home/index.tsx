@@ -11,6 +11,7 @@ import { Octicons } from '@expo/vector-icons';
 import { Coupons, Currencies } from '@/constants/Backend';
 import useUI from '@/hooks/useUI';
 import useTransaction from '@/hooks/useTransaction';
+import { ShowInfo, ShowSuccess } from '@/utils/toast';
 
 const Home = () => {
   const currencies = Currencies;
@@ -43,7 +44,6 @@ const Home = () => {
         active: 'S',
       };
       const data = await ExchangeService.calculate(payload);
-      if (coupon) setCouponStore(coupon);
       startTransaction(payload, data);
     } catch (error) {
       Logger.log(error);
@@ -51,7 +51,11 @@ const Home = () => {
   };
 
   const validateCoupon = () => {
-    setIsCouponValid(Coupons.includes(coupon));
+    if(Coupons.includes(coupon)) {
+      setIsCouponValid(true);
+      setCouponStore(coupon)
+      ShowSuccess('Cupón válido', 'El cupón es válido')
+    }
   };
 
   const switchCurrency = async () => {
@@ -92,6 +96,10 @@ const Home = () => {
     router.push('/(tabs)/home/transaction/complete');
   };
 
+  const workingOnIt = () => {
+    ShowInfo('🚧 Función en desarrollo', 'Esta funcionalidad estará disponible próximamente.');
+  };
+
   forceShowTabBar();
 
   useFocusEffect(
@@ -113,7 +121,7 @@ const Home = () => {
 
   return (
     <SafeAreaView className="min-h-screen">
-      <KeyboardAvoidingView keyboardVerticalOffset={100}>
+      <KeyboardAvoidingView behavior="padding" className="flex-1">
         <ScrollView className="px-6">
           <View className="my-2" />
 
@@ -122,10 +130,20 @@ const Home = () => {
           </View>
 
           <View className="flex flex-row">
-            <TouchableOpacity className="bg-black h-14 flex flex-1 justify-center rounded-t-xl">
+            <TouchableOpacity
+              onPress={() => {
+                ShowInfo('😖 No sé que funcionalidad tiene', 'El figma no lo detalla :c.');
+              }}
+              className="bg-black h-14 flex flex-1 justify-center rounded-t-xl"
+            >
               <Text className="font-mbold text-white self-center">Compra: {exchangeRate?.ask}</Text>
             </TouchableOpacity>
-            <TouchableOpacity className="bg-white h-14 flex flex-1 justify-center rounded-t-xl">
+            <TouchableOpacity
+              onPress={() => {
+                ShowInfo('😖 No sé que funcionalidad tiene', 'El figma no lo detalla :c.');
+              }}
+              className="bg-white h-14 flex flex-1 justify-center rounded-t-xl"
+            >
               <Text className="font-mbold text-gray-400 self-center">Venta: {exchangeRate?.bid}</Text>
             </TouchableOpacity>
           </View>
@@ -148,6 +166,7 @@ const Home = () => {
                     value={amount}
                     onChangeText={(text) => {
                       setAmount(text);
+                      calculate();
                     }}
                     onBlur={() => calculate()}
                     placeholder="0.00"
@@ -158,7 +177,7 @@ const Home = () => {
                     selectedValue={originCurrency}
                     onValueChange={(value) => changeCurrency('origin', value)}
                     style={{ height: 70, color: 'white' }}
-                    dropdownIconColor="white" // Color del ícono del dropdown
+                    dropdownIconColor="white"
                   >
                     {currencies.map((cur) => (
                       <Picker.Item key={cur.id} label={cur.name} value={cur.code} />
@@ -177,7 +196,7 @@ const Home = () => {
                     selectedValue={destinationCurrency}
                     onValueChange={(value) => changeCurrency('destination', value)}
                     style={{ height: 70, color: 'white' }}
-                    dropdownIconColor="white" // Color del ícono del dropdown
+                    dropdownIconColor="white"
                   >
                     {currencies.map((cur) => (
                       <Picker.Item key={cur.id} label={cur.name} value={cur.code} />
@@ -202,8 +221,9 @@ const Home = () => {
               <TextInput
                 className={`font-mmedium border border-gray-300 rounded-l-xl py-4 pl-5 flex-1 text-center`}
                 placeholder="Ingresa el cupón"
-                onChangeText={(e) => setCoupon(e.toUpperCase())}
+                onChangeText={(text) => setCoupon(text.toUpperCase())}
                 value={coupon}
+                autoCapitalize="characters" // Para que automáticamente capitalice las letras
               />
               <TouchableOpacity onPress={validateCoupon} className="bg-black flex items-center justify-center rounded-r-xl">
                 <Text className="text-base font-mmedium text-white px-4">APLICAR</Text>
@@ -216,9 +236,15 @@ const Home = () => {
               </Text>
             )}
 
-            <Text className="text-base font-mmedium self-center">¿Monto mayor a $5.000 o S/18.000?</Text>
-            <Text className="text-base font-mbold underline self-center">¡Obtén un Tipo de Cambio Preferencial!</Text>
-            <View className="my-2" />
+            <View className="w-full flex flex-row items-center px-4 my-6">
+              <Octicons name="star-fill" size={22} color={'#05e2c3'} />
+              <View className="pl-4">
+                <Text className="text-sm font-mmedium self-center">¿Monto mayor a $5.000 o S/18.000?</Text>
+                <TouchableOpacity onPress={workingOnIt}>
+                  <Text className="text-sm font-mbold underline self-center">¡Obtén un Tipo de Cambio Preferencial!</Text>
+                </TouchableOpacity>
+              </View>
+            </View>
           </View>
 
           <View className="my-2" />

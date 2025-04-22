@@ -4,7 +4,7 @@ export interface Response<T> {
 }
 
 interface ErrorResponse {
-  name: string;
+  name: 'DUPLICATE_DNI' | 'DUPLICATE_EMAIL' | 'INVALID_PHONE' | 'SERVER_ERROR' | 'USER_NOT_FOUND' | 'INVALID_PASSWORD';
   title: string;
   message: string;
 }

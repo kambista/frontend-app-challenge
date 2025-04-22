@@ -1,6 +1,7 @@
 import { User } from '@/models';
 import AuthService from '@/services/authService';
 import { useAuthStore } from '@/store/authStore';
+import { ShowError } from '@/utils/toast';
 
 const useAuth = () => {
   const { login: loginStore, logout: logoutStore, userData } = useAuthStore();
@@ -8,9 +9,12 @@ const useAuth = () => {
   const register = (user: User) => {
     try {
       const response = AuthService.register(user);
-      if (response.success) {
+      if (response.success == true) {
         const payload = { email: user.email, password: user.password };
         return login(payload);
+      } else {
+        ShowError(response.data.title, response.data.message);
+        return false;
       }
     } catch (err) {
       console.error('Error', err);

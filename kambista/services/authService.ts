@@ -91,7 +91,7 @@ const AuthService = {
       return {
         success: false,
         data: {
-          name: 'REGISTRATION_ERROR',
+          name: 'SERVER_ERROR',
           title: 'Error en registro',
           message: 'Ocurrió un error durante el registro. Inténtalo nuevamente.',
         },

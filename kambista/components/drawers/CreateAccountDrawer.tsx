@@ -10,6 +10,7 @@ import { Picker } from '@react-native-picker/picker';
 import { TextInput } from 'react-native-gesture-handler';
 import { Logger } from '@/utils/logger';
 import InfoCard from '../InfoCard';
+import { ShowInfo } from '@/utils/toast';
 
 export type Ref = BottomSheetModal;
 
@@ -37,6 +38,7 @@ const CreateAccountDrawer = forwardRef<Ref, CreateAccountDrawerProps>((props, re
 
   const handleSubmit = (values: any) => {
     Logger.log('Endpoint: crear nueva cuenta.', values);
+    ShowInfo("Agregar cuenta", "Invocar endpoint para generar la nueva cuenta bancaria.");
     dismiss();
   };
 
@@ -51,6 +53,8 @@ const CreateAccountDrawer = forwardRef<Ref, CreateAccountDrawerProps>((props, re
     },
     validationSchema: AccountSchema,
     onSubmit: handleSubmit,
+    validateOnBlur: true,
+    validateOnChange: true,
   });
 
   return (
@@ -135,7 +139,6 @@ const CreateAccountDrawer = forwardRef<Ref, CreateAccountDrawerProps>((props, re
           <TextInput
             placeholder="Escribe tu cuenta de destino"
             keyboardType="number-pad"
-            autoCapitalize="none"
             value={formik.values.account_number}
             className={`font-mmedium border rounded-lg py-4 pl-5 ${
               formik.touched.account_number && formik.errors.account_number ? 'border-red-500' : 'border-gray-300'

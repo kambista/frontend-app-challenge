@@ -4,6 +4,7 @@ import { Octicons } from '@expo/vector-icons';
 import BottomTabBar from '@/components/bottom-tabbar/BottomTabBar';
 import { StatusBar } from 'expo-status-bar';
 import { useAuthStore } from '@/store/authStore';
+import { KeyboardAvoidingView, Platform } from 'react-native';
 
 interface TabIconProps {
   icon: any;
@@ -23,12 +24,15 @@ export default function TabLayout() {
   }
 
   return (
-    <>
+    <KeyboardAvoidingView style={{ flex: 1 }} keyboardVerticalOffset={Platform.OS === 'ios' ? 0 : 0}>
       <Tabs
         screenOptions={{
           tabBarShowLabel: false,
           tabBarActiveTintColor: 'black',
           tabBarInactiveTintColor: '#737373',
+          tabBarStyle: {
+            position: 'relative', // Cambia de absolute a relative
+          },
         }}
         tabBar={(props) => <BottomTabBar {...props} />}
       >
@@ -76,7 +80,7 @@ export default function TabLayout() {
 
       {/* BARRA DE ESTADO */}
       <StatusBar backgroundColor="#f7f7ff" style="dark" />
-    </>
+    </KeyboardAvoidingView>
   );
 }
 

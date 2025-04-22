@@ -2,15 +2,24 @@ import React, { View } from 'react-native';
 import { BottomTabBarProps } from '@react-navigation/bottom-tabs';
 import BottomTabButton from './BottomTabButton';
 import useUI from '@/hooks/useUI';
+import { useKeyboard } from '@react-native-community/hooks';
 
 const BottomTabBar = ({ state, descriptors, navigation }: BottomTabBarProps) => {
   const { isTabBarVisible } = useUI();
+  const keyboard = useKeyboard();
+
   if (!isTabBarVisible) return null;
 
   return (
     <View
-      className="absolute bottom-0 mx-0 flex flex-row justify-between items-center bg-white"
-      style={{ boxShadow: '0px 0px 10px rgba(0, 0, 0, 0.1)' }}
+      className={`flex flex-row justify-between items-center bg-white pb-4 ${keyboard.keyboardShown ? 'hidden' : ''}`}
+      style={{
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: -2 },
+        shadowOpacity: 0.1,
+        shadowRadius: 10,
+        elevation: 10,
+      }}
     >
       {state.routes.map((route, index) => {
         if (['_sitemap', '+not-found'].includes(route.name)) return null;
