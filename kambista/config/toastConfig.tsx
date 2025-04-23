@@ -5,7 +5,7 @@ import { ToastShowParams } from 'react-native-toast-message';
 export const toastConfig = {
   success: (props: ToastShowParams) => (
     <View
-      className="bg-white rounded-xl flex flex-row w-full px-5 py-3 w-[91%] h-auto"
+      className="bg-white rounded-xl flex flex-row w-full px-5 py-3 w-[90vw] h-auto"
       style={{ boxShadow: '0px 6px 12px -2px rgba(0, 0, 0, 0.15)' }}
     >
       <View className="bg-black rounded-full aspect-square flex items-center justify-center h-8 self-center">
@@ -19,7 +19,7 @@ export const toastConfig = {
   ),
   error: (props: ToastShowParams) => (
     <View
-      className="bg-white rounded-xl flex flex-row w-full px-5 py-3 w-[91%] h-auto"
+      className="bg-white rounded-xl flex flex-row w-full px-5 py-3 w-[90vw] h-auto"
       style={{ boxShadow: '0px 6px 12px -2px rgba(0, 0, 0, 0.15)' }}
     >
       <View className="bg-black rounded-full aspect-square flex items-center justify-center h-8 self-center">
@@ -33,7 +33,7 @@ export const toastConfig = {
   ),
   info: (props: ToastShowParams) => (
     <View
-      className="bg-white rounded-xl flex flex-row w-full px-5 py-3 w-[91%] h-auto"
+      className="bg-white rounded-xl flex flex-row w-full px-5 py-3 w-[90vw] h-auto"
       style={{ boxShadow: '0px 6px 12px -2px rgba(0, 0, 0, 0.15)' }}
     >
       <View className="bg-black rounded-full aspect-square flex items-center justify-center h-8 self-center">

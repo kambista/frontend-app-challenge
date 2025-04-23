@@ -215,7 +215,7 @@ const SignUp = () => {
                   <TextInput
                     placeholder="••••••••"
                     secureTextEntry={!showPassword}
-                    className="flex-1 font-mmedium"
+                    className="flex-1 font-mmedium h-12"
                     value={formik.values.password}
                     onChangeText={formik.handleChange('password')}
                     onBlur={formik.handleBlur('password')}
