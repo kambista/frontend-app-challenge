@@ -1,4 +1,3 @@
-import React from 'react';
 import { Text, Pressable, StyleSheet, View } from 'react-native';
 
 interface Props {
@@ -21,6 +20,7 @@ export const CustomButton = ({ label, onPressFunction }: Props) => {
               styles.buttonText,
               pressed ? { opacity: 0.5 } : { color: '#000000' },
             ]}
+            className="font-montserrat-medium"
           >
             {label}
           </Text>
@@ -43,7 +43,6 @@ const styles = StyleSheet.create({
   buttonText: {
     color: '#000000',
     fontSize: 14,
-    fontWeight: '500',
     textTransform: 'uppercase',
   },
 });

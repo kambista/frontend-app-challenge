@@ -1,6 +1,5 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
-  // NOTE: Update this to include the paths to all of your component files.
   content: ['./App.{js,ts,tsx}', './components/**/*.{js,ts,tsx}'],
   presets: [require("nativewind/preset")],
   theme: {
@@ -24,7 +23,19 @@ module.exports = {
         'blue': '#456dd3',
         'blue-lighter': '#d2e9ff',
         'blue-ultra-light': '#e8eef4',
-      }
+        'blue-dark': '#082774',
+      },
+      fontFamily: {
+        montserrat:             ["Montserrat-Regular"],
+        "montserrat-thin":      ["Montserrat-Thin"],
+        "montserrat-extralight":["Montserrat-ExtraLight"],
+        "montserrat-light":     ["Montserrat-Light"],
+        "montserrat-medium":    ["Montserrat-Medium"],
+        "montserrat-semibold":  ["Montserrat-SemiBold"],
+        "montserrat-bold":      ["Montserrat-Bold"],
+        "montserrat-extrabold": ["Montserrat-ExtraBold"],
+        "montserrat-black":     ["Montserrat-Black"],
+      },
     },
   },
   plugins: [],

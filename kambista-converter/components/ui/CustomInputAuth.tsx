@@ -1,4 +1,3 @@
-import React from 'react';
 import {
   View,
   Text,
@@ -32,11 +31,15 @@ export const CustomInputAuth = ({
 }: Props) => {
   return (
     <View style={styles.container}>
-      <Text style={styles.label} className="text-gray-60">
+      <Text
+        style={styles.label}
+        className="text-gray-60 font-montserrat-medium"
+      >
         {label}
       </Text>
       <View style={[styles.inputContainer, error && styles.inputError]}>
         <TextInput
+          className="font-montserrat-medium"
           style={styles.input}
           value={value}
           onChangeText={onChangeText}
@@ -65,7 +68,6 @@ const styles = StyleSheet.create({
   },
   label: {
     fontSize: 14,
-    fontWeight: '500',
     marginBottom: 8,
   },
   inputContainer: {
@@ -77,17 +79,18 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     paddingVertical: 4,
   },
-  inputError: {
-    borderColor: '#EF4444',
-  },
   input: {
     flex: 1,
     fontSize: 14,
-    color: '#1F2937',
+    color: '#060F26',
     height: '100%',
+    fontFamily: 'montserrat-medium',
   },
   iconButton: {
     padding: 8,
+  },
+  inputError: {
+    borderColor: '#EF4444',
   },
   errorText: {
     color: '#EF4444',

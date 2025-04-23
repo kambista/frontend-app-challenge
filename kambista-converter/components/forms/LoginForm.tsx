@@ -1,16 +1,14 @@
 import { useState } from 'react';
 import { Image, StyleSheet, Text, View, TouchableOpacity } from 'react-native';
 import { useCustomInputAuth } from '../../hooks/useCustomInputAuth';
+import { Link } from 'expo-router';
 import { useCheckbox } from '../../hooks/useCheckbox';
 import { useSubmit } from '../../hooks/useSubmit';
 import { CustomInputAuth } from '../ui/CustomInputAuth';
 import { CustomCheckbox } from '../ui/CustomCheckbox';
 import { CustomButton } from '../ui/CustomButton';
-import { EyeIcon, EyeOffIcon } from '../ui/EyeIcons';
-import { SvgUri } from 'react-native-svg';
-
-const logoAsset = require('../../assets/svg/logo_kambista.svg');
-const { uri: logoUri } = Image.resolveAssetSource(logoAsset);
+import { EyeIcon, EyeOffIcon } from '../icons/EyeIcons';
+import { LogoKambista } from '../icons/LogoKambista';
 
 export const LoginForm = () => {
   const emailInput = useCustomInputAuth('email');
@@ -22,8 +20,11 @@ export const LoginForm = () => {
   return (
     <View style={styles.container}>
       <View className="items-center mb-6">
-        <SvgUri width={204} height={48} uri={logoUri} />
-        <Text className="mt-10 mb-12 text-xl font-bold text-black">
+        <LogoKambista width={204} height={48} />
+        <Text
+          style={styles.loginHeaderText}
+          className="mt-10 mb-12 text-black font-montserrat-bold"
+        >
           Inicia sesión
         </Text>
       </View>
@@ -49,7 +50,7 @@ export const LoginForm = () => {
         <CustomCheckbox label="Recordarme" {...checkbox} />
         <TouchableOpacity>
           <Text
-            className="text-gray-60 underline"
+            className="text-gray-60 underline font-montserrat-medium"
             style={styles.passwordRecoveryText}
           >
             ¿Olvidaste tu contraseña?
@@ -62,14 +63,22 @@ export const LoginForm = () => {
       </View>
 
       <View className="flex-row justify-center items-center gap-1">
-        <Text style={styles.registerText} className="text-gray-60">
+        <Text
+          style={styles.registerText}
+          className="text-gray-60 font-montserrat-medium"
+        >
           ¿No tienes cuenta?
         </Text>
-        <TouchableOpacity>
-          <Text style={styles.registerText} className="text-gray-60 underline">
-            Regístrate aquí
-          </Text>
-        </TouchableOpacity>
+        <Link asChild href="/Onboarding">
+          <TouchableOpacity>
+            <Text
+              style={styles.registerText}
+              className="text-gray-60 underline font-montserrat-medium"
+            >
+              Regístrate aquí
+            </Text>
+          </TouchableOpacity>
+        </Link>
       </View>
     </View>
   );
@@ -81,14 +90,14 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     width: '100%',
-    paddingHorizontal: 16,
   },
   passwordRecoveryText: {
     fontSize: 12,
-    fontWeight: '500',
   },
   registerText: {
     fontSize: 14,
-    fontWeight: '500',
+  },
+  loginHeaderText: {
+    fontSize: 20,
   },
 });

@@ -1,4 +1,3 @@
-import React from 'react';
 import { TouchableOpacity, View, Text, StyleSheet } from 'react-native';
 
 interface Props {
@@ -15,13 +14,16 @@ export const CustomCheckbox = ({ label, checked, onPress }: Props) => {
       activeOpacity={0.8}
     >
       <View
-        className={`w-5 h-5 rounded border mr-2 items-center justify-center ${
+        className={`w-5 h-5 rounded border mr-2 items-center justify-center  ${
           checked ? 'bg-primary border-primary' : 'border-gray-40'
         }`}
       >
         {checked && <View className="w-3 h-3 bg-white rounded-sm" />}
       </View>
-      <Text className="text-gray-60" style={styles.label}>
+      <Text
+        className="text-gray-60 font-montserrat-medium"
+        style={styles.label}
+      >
         {label}
       </Text>
     </TouchableOpacity>
@@ -31,6 +33,5 @@ export const CustomCheckbox = ({ label, checked, onPress }: Props) => {
 const styles = StyleSheet.create({
   label: {
     fontSize: 12,
-    fontWeight: '500',
   },
 });
