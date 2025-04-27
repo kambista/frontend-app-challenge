@@ -8,8 +8,12 @@ import Svg, {
   SvgProps,
 } from 'react-native-svg';
 
-export const LogoKambista = (props: SvgProps) => (
-  <Svg width={204} height={48} fill="none" {...props}>
+export const LogoKambista = ({
+  width = 204,
+  height = 48,
+  ...props
+}: SvgProps) => (
+  <Svg width={width} height={height} fill="none" {...props}>
     <G clipPath="url(#a)">
       <Path
         fill="#060F26"

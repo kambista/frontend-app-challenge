@@ -1,5 +1,5 @@
 import { Alert } from 'react-native';
-import { useLoginForm } from '../stores/useLoginForm';
+import { useLoginForm } from './useLoginForm';
 
 export function useSubmit() {
   const validate = useLoginForm((s) => s.validate);

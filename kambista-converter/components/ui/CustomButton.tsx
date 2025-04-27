@@ -41,7 +41,6 @@ const styles = StyleSheet.create({
     width: '100%',
   },
   buttonText: {
-    color: '#000000',
     fontSize: 14,
     textTransform: 'uppercase',
   },

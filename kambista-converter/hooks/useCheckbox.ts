@@ -1,4 +1,4 @@
-import { useLoginForm } from '../stores/useLoginForm';
+import { useLoginForm } from './useLoginForm';
 
 export function useCheckbox() {
   const checked = useLoginForm((s) => s.rememberMe);

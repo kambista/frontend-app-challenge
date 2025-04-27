@@ -1,4 +1,4 @@
-import { useLoginForm } from '../stores/useLoginForm';
+import { useLoginForm } from './useLoginForm';
 
 type Field = 'email' | 'password';
 export const useCustomInputAuth = (field: Field) => {

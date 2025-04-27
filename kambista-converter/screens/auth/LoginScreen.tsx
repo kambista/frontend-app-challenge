@@ -1,11 +1,14 @@
 import { View, StyleSheet } from 'react-native';
 import { LoginForm } from '../../components/forms/LoginForm';
+import { ScreenContainer } from '../../components/layout/ScreenContainer';
 
 export const LoginScreen = () => {
   return (
-    <View style={styles.container}>
-      <LoginForm />
-    </View>
+    <ScreenContainer>
+      <View style={styles.container}>
+        <LoginForm />
+      </View>
+    </ScreenContainer>
   );
 };
 
