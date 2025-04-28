@@ -25,15 +25,11 @@ export async function calculateExchange(
 ): Promise<CalculateExchangeResponse> {
   const params = { originCurrency, destinationCurrency, amount, active: 'S' };
 
-  const fullUrl = api.getUri({ url: 'exchange/calculates', params });
-  console.log('[calculateExchange] full URL →', fullUrl);
-
   try {
     const res = await api.get<CalculateExchangeResponse>(
       'exchange/calculates',
       { params },
     );
-    console.log('[calculateExchange] status=', res.status, 'data=', res.data);
     return res.data;
   } catch (err: any) {
     console.error(
@@ -49,11 +45,6 @@ export async function calculateExchange(
 
 export async function getCurrentKambistaRate(): Promise<CurrentRateResponse> {
   const res = await api.get<CurrentRateResponse>('exchange/kambista/current');
-  console.log(
-    '[getCurrentKambistaRate]',
-    (res.config?.baseURL ?? '') + (res.config?.url ?? ''),
-    res.status,
-  );
   return res.data;
 }
 

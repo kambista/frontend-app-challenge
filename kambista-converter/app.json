@@ -1,15 +1,15 @@
 {
   "expo": {
-    "name": "kambista-converter",
+    "name": "kambista",
     "slug": "kambista-converter",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
+    "icon": "./assets/KambistaLogo.png",
     "userInterfaceStyle": "light",
     "newArchEnabled": true,
     "scheme": "kambista-converter",
     "splash": {
-      "image": "./assets/splash-icon.png",
+      "image": "./assets/KambistaLogo.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
@@ -18,12 +18,12 @@
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
+        "foregroundImage": "./assets/KambistaLogo.png",
         "backgroundColor": "#ffffff"
       }
     },
     "web": {
-      "favicon": "./assets/favicon.png",
+      "favicon": "./assets/KambistaLogo.png",
       "bundler": "metro"
     },
     "plugins": [

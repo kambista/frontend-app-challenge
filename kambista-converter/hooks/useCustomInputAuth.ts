@@ -1,6 +1,7 @@
 import { useLoginForm } from './useLoginForm';
 
 type Field = 'email' | 'password';
+
 export const useCustomInputAuth = (field: Field) => {
   const value = useLoginForm((s) => s[field]);
   const setValue = useLoginForm((s) =>

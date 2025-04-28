@@ -12,6 +12,7 @@ interface CustomInputOnboardingProps {
   onBlur?: () => void;
   isError?: boolean;
   errorMessage?: string;
+  style?: {};
 }
 
 export const CustomInputOnboarding = ({
@@ -25,9 +26,10 @@ export const CustomInputOnboarding = ({
   onBlur,
   isError = false,
   errorMessage,
+  style = {},
 }: CustomInputOnboardingProps) => {
   return (
-    <View className="mb-4 w-full">
+    <View className="mb-4 w-full" style={style}>
       <Text
         className="text-gray-60 mb-2 font-montserrat-medium"
         style={styles.textLabel}

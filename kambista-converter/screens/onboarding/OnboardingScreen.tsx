@@ -3,7 +3,7 @@ import { ScreenContainer } from '../../components/layout/ScreenContainer';
 
 export const OnboardingScreen = () => {
   return (
-    <ScreenContainer>
+    <ScreenContainer scrollable={true}>
       <OnboardingForm />
     </ScreenContainer>
   );

@@ -2,13 +2,27 @@ import MockAdapter from 'axios-mock-adapter';
 import { v4 as uuidv4 } from 'uuid';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { api } from './client';
+import banks from '../mocks/bankAccounts.json';
+import sourceFunds from '../mocks/sourceFunds.json';
 
 const mock = new MockAdapter(api, {
   delayResponse: 500,
   onNoMatch: 'passthrough',
 });
 
-let users: any[] = [];
+const DEMO_EMAIL = 'ejemplo@mail.com';
+const DEMO_PASS = 'Contraseña123';
+
+interface User {
+  id: string;
+  name: string;
+  documentNumber: string;
+  email: string;
+  password: string;
+}
+
+let users: User[] = [];
+
 (async () => {
   const json = await AsyncStorage.getItem('mockUsers');
   users = json ? JSON.parse(json) : [];
@@ -16,7 +30,11 @@ let users: any[] = [];
 
 mock.onPost('onboarding/register').reply(async (config) => {
   const payload = JSON.parse(config.data);
-  if (users.some((u) => u.documentNumber === payload.documentNumber)) {
+  const duplicateDNI = users.some(
+    (u) => u.documentNumber === payload.documentNumber,
+  );
+
+  if (duplicateDNI) {
     return [
       200,
       {
@@ -29,15 +47,32 @@ mock.onPost('onboarding/register').reply(async (config) => {
       },
     ];
   }
-  users.push(payload);
+
+  const firstName = (payload.name ?? payload.firstName ?? 'usuario')
+    .split(' ')[0]
+    .toLowerCase();
+  const email = `${firstName}@mail.com`;
+
+  const newUser: User = {
+    id: uuidv4(),
+    name: payload.name ?? `${firstName}`,
+    documentNumber: payload.documentNumber,
+    email,
+    password: DEMO_PASS,
+  };
+
+  users.push(newUser);
   await AsyncStorage.setItem('mockUsers', JSON.stringify(users));
+
   return [
     200,
     {
       success: true,
       data: {
-        userId: uuidv4(),
+        userId: newUser.id,
         token: 'fake-jwt-token',
+        email: newUser.email,
+        password: DEMO_PASS,
       },
     },
   ];
@@ -45,17 +80,14 @@ mock.onPost('onboarding/register').reply(async (config) => {
 
 mock.onPost('auth/login').reply(async (config) => {
   const { email, password } = JSON.parse(config.data);
-  const foundUser = users.find(
-    (u) => u.email === email && u.password === password,
-  );
 
-  if (email === 'usuario@ejemplo.com' && password === 'password123') {
+  if (email === DEMO_EMAIL && password === DEMO_PASS) {
     return [
       200,
       {
         success: true,
         data: {
-          userId: uuidv4(),
+          userId: 'demo-id',
           token: 'fake-jwt-token-demo',
           user: { name: 'Usuario Demo', email },
         },
@@ -63,15 +95,17 @@ mock.onPost('auth/login').reply(async (config) => {
     ];
   }
 
-  if (foundUser) {
+  const found = users.find((u) => u.email === email && u.password === password);
+
+  if (found) {
     return [
       200,
       {
         success: true,
         data: {
-          userId: foundUser.id || uuidv4(),
+          userId: found.id,
           token: 'fake-jwt-token-' + Math.random().toString(36).substring(2),
-          user: { name: foundUser.name, email: foundUser.email },
+          user: { name: found.name, email: found.email },
         },
       },
     ];
@@ -88,6 +122,39 @@ mock.onPost('auth/login').reply(async (config) => {
       },
     },
   ];
+});
+
+mock.onGet('/catalog/banks').reply(200, banks);
+mock.onGet('/catalog/sources-fund').reply(200, sourceFunds);
+
+interface Wallet {
+  id: string;
+  alias: string;
+  number: string;
+}
+
+let wallets: Wallet[] = [
+  { id: '1', alias: 'Alias · Scotiabank · PEN', number: '******4444' },
+  { id: '2', alias: 'Alias · BCP · PEN', number: '******8888' },
+];
+
+(async () => {
+  const json = await AsyncStorage.getItem('mockWallets');
+  if (json) wallets = JSON.parse(json);
+})();
+
+mock.onGet('/user/wallets').reply(200, wallets);
+
+mock.onPost('/user/wallets').reply(async (config) => {
+  const payload = JSON.parse(config.data);
+  const newWallet: Wallet = {
+    id: uuidv4(),
+    alias: payload.alias,
+    number: `******${payload.number.slice(-4)}`,
+  };
+  wallets.push(newWallet);
+  await AsyncStorage.setItem('mockWallets', JSON.stringify(wallets));
+  return [200, newWallet];
 });
 
 export default mock;

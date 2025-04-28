@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { StyleSheet, Text, View, TouchableOpacity, Alert } from 'react-native';
 import { useCustomInputAuth } from '../../hooks/useCustomInputAuth';
+import { useLoginForm } from '../../hooks/useLoginForm';
 import { Link, useRouter } from 'expo-router';
 import { useCheckbox } from '../../hooks/useCheckbox';
 import { CustomInputAuth } from '../ui/CustomInputAuth';
@@ -14,30 +15,48 @@ import { api } from '../../api/client';
 export const LoginForm = () => {
   const emailInput = useCustomInputAuth('email');
   const passInput = useCustomInputAuth('password');
+  const setFieldError = useLoginForm((s) => s.setFieldError);
+  const resetErrors = useLoginForm((s) => s.resetErrors);
+  const validate = useLoginForm((s) => s.validate);
   const checkbox = useCheckbox();
   const [show, setShow] = useState(false);
   const [loading, setLoading] = useState(false);
   const [savedEmail, setSavedEmail] = useState('');
   const router = useRouter();
 
-  useEffect(() => {
-    const loadSavedEmail = async () => {
-      try {
-        const email = await AsyncStorage.getItem('savedEmail');
-        if (email) {
-          emailInput.onChangeText(email);
-          setSavedEmail(email);
-          if (!checkbox.checked) {
-            checkbox.onPress();
-          }
-        }
-      } catch (error) {
-        console.error('Error cargando email guardado:', error);
-      }
-    };
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-    loadSavedEmail();
+  useEffect(() => {
+    (async () => {
+      const saved = await AsyncStorage.getItem('savedEmail');
+      if (saved) {
+        useLoginForm.getState().setEmail(saved);
+        if (!checkbox.checked) checkbox.onPress();
+      }
+    })();
   }, []);
+
+  useEffect(() => {
+    const v = emailInput.value.trim();
+    if (v === '') {
+      setFieldError('email', '');
+    } else if (!emailRegex.test(v)) {
+      setFieldError('email', 'Correo inválido');
+    } else {
+      setFieldError('email', '');
+    }
+  }, [emailInput.value]);
+
+  useEffect(() => {
+    const v = passInput.value.trim();
+    if (v === '') {
+      setFieldError('password', '');
+    } else if (v.length < 6) {
+      setFieldError('password', 'Mínimo 6 caracteres');
+    } else {
+      setFieldError('password', '');
+    }
+  }, [passInput.value]);
 
   const handleLogin = async () => {
     if (!emailInput.value || !passInput.value) {
@@ -120,7 +139,12 @@ export const LoginForm = () => {
       </View>
 
       <View className="w-full flex-row justify-between items-center mb-20">
-        <CustomCheckbox label="Recordarme" {...checkbox} />
+        <CustomCheckbox
+          label="Recordarme"
+          checked={checkbox.checked}
+          onPress={checkbox.onPress}
+        />
+
         <TouchableOpacity onPress={() => router.push('/ForgotPassword')}>
           <Text
             className="text-gray-60 underline font-montserrat-medium"

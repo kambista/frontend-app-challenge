@@ -66,3 +66,12 @@ export const validarFechaNacimiento = (value: string): boolean => {
   }
   return edad >= 18;
 };
+
+export const validarEmail = (value: string): boolean => {
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  return emailRegex.test(value.trim());
+};
+
+export const validarPassword = (value: string): boolean => {
+  return value.trim().length >= 6;
+};

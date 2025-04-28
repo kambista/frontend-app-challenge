@@ -10,8 +10,11 @@ import { CouponInput } from '../../components/ui/CouponInput';
 import { Tab } from '../../components/ui/TabButton';
 import { CustomButton } from '../../components/ui/CustomButton';
 import { LogoKambistaMini } from '../icons/LogoKambistaMini';
+import { useTransactionStore } from '../../stores/transactionStore';
 
 export const ExchangeCalculator: React.FC = () => {
+  const { transaction, setTransaction } = useTransactionStore();
+
   const opts = [
     { value: 'USD', label: 'Dólares' },
     { value: 'PEN', label: 'Soles' },
@@ -115,6 +118,7 @@ export const ExchangeCalculator: React.FC = () => {
       >
         <LogoKambistaMini />
       </View>
+
       <View className="items-center w-full" style={{ marginTop: 30 }}>
         <View className="flex-row">
           <Tab
@@ -128,6 +132,7 @@ export const ExchangeCalculator: React.FC = () => {
             onPress={() => handleTab('venta')}
           />
         </View>
+
         <View
           className="w-full bg-white"
           style={{
@@ -137,9 +142,9 @@ export const ExchangeCalculator: React.FC = () => {
             borderBottomLeftRadius: 8,
           }}
         >
-          <View className="relative px-5">
+          <View className="px-5">
             <CurrencyInput
-              style="mb-3"
+              style="mb-[-22px]"
               label="¿Cuánto envías?"
               amount={top.amount}
               onAmountChange={top.setAmount}
@@ -148,37 +153,41 @@ export const ExchangeCalculator: React.FC = () => {
             />
             <View
               style={{
-                position: 'absolute',
-                zIndex: 1,
-                top: 55,
-                left: 185,
-                padding: 10,
-                backgroundColor: 'rgba(0,0,0,0.1)',
-                borderRadius: 50,
-                width: 55,
-                height: 55,
+                display: 'flex',
+                alignItems: 'flex-end',
+                marginRight: 70,
               }}
             >
-              <TouchableOpacity
-                onPress={swap}
-                className="p-2"
+              <View
                 style={{
-                  width: 35,
+                  padding: 10,
+                  backgroundColor: 'rgba(0,0,0,0.1)',
                   borderRadius: 50,
-                  backgroundColor: '#fff',
-                  shadowColor: '#000',
-                  shadowOffset: { width: 0, height: 2 },
-                  shadowOpacity: 0.25,
-                  shadowRadius: 8,
-                  elevation: 5,
+                  width: 55,
+                  height: 55,
                 }}
               >
-                <RefreshIcon />
-              </TouchableOpacity>
+                <TouchableOpacity
+                  onPress={swap}
+                  className="p-2 relative z-10"
+                  style={{
+                    width: 35,
+                    borderRadius: 50,
+                    backgroundColor: '#fff',
+                    shadowColor: '#000',
+                    shadowOffset: { width: 0, height: 2 },
+                    shadowOpacity: 0.25,
+                    shadowRadius: 8,
+                    elevation: 5,
+                  }}
+                >
+                  <RefreshIcon />
+                </TouchableOpacity>
+              </View>
             </View>
 
             <CurrencyInput
-              style="mb-3"
+              style="mt-[-22px] mb-3"
               label="Entonces recibes"
               amount={bottom.amount}
               onAmountChange={bottom.setAmount}
@@ -203,6 +212,7 @@ export const ExchangeCalculator: React.FC = () => {
                   S/ 555.00
                 </Text>
               </View>
+
               <View className="items-end">
                 <Text
                   className="text-secondary font-montserrat-medium"
@@ -228,7 +238,10 @@ export const ExchangeCalculator: React.FC = () => {
             <View className="flex-row items-center mb-2">
               <StartIcon />
               <View className="ml-2 flex-col">
-                <Text className="text-[13px] text-secondary font-montserrat-regular">
+                <Text
+                  className=" text-secondary font-montserrat-regular"
+                  style={{ fontSize: 14 }}
+                >
                   ¿Monto mayor a $5,000 o S/18,000?
                 </Text>
                 <Text
@@ -245,7 +258,32 @@ export const ExchangeCalculator: React.FC = () => {
         <View className="w-full" style={{ paddingTop: 12 }}>
           <CustomButton
             label="INICIAR OPERACIÓN"
-            onPressFunction={() => router.push('/(tabs)/transactions')}
+            onPressFunction={() => {
+              const currentTransaction = transaction ?? {
+                sendAmount: '',
+                receiveAmount: '',
+                coupon: '',
+                usedRate: '',
+                marketRate: '',
+                operationNumber: '',
+                fromBank: '',
+                fromBankName: '',
+                toAccount: '',
+                fundSource: '',
+              };
+
+              const fxRate = active === 'compra' ? rate.bid : rate.ask;
+
+              setTransaction({
+                ...currentTransaction,
+                sendAmount: `${top.currency === 'USD' ? '$' : 'S/'} ${top.amount}`,
+                receiveAmount: `${bottom.currency === 'USD' ? '$' : 'S/'} ${bottom.amount}`,
+                usedRate: fxRate.toFixed(3),
+                marketRate: fxRate.toFixed(3),
+              });
+
+              router.push('/Transactions');
+            }}
           />
         </View>
       </View>

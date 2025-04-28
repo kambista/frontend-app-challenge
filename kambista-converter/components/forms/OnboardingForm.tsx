@@ -34,6 +34,8 @@ import {
   formatFecha,
 } from '../../utils/validators';
 import { Success } from '../states/Success';
+import { ScreenContainer } from '../layout/ScreenContainer';
+import { MessageBox } from '../ui/MessageBox';
 
 type DocumentType = 'dni' | 'cce' | 'passport';
 
@@ -167,16 +169,25 @@ export const OnboardingForm: React.FC = () => {
   };
 
   if (isSuccess) {
-    return <Success username={nameInput.value} />;
+    return (
+      <ScreenContainer>
+        <View style={styles.containerSuccess}>
+          <Success username={nameInput.value} />
+        </View>
+      </ScreenContainer>
+    );
   }
 
   return (
-    <ScrollView className="flex-1">
+    <>
       <View className="flex-row items-center justify-between px-4 py-4">
         <TouchableOpacity className="p-2" onPress={() => router.back()}>
           <ChevronLeftIcon />
         </TouchableOpacity>
-        <Text className="text-secondary text-[14px] font-montserrat-bold">
+        <Text
+          className="text-secondary font-montserrat-bold"
+          style={{ fontSize: 14 }}
+        >
           Completa tus datos
         </Text>
         <Link asChild href="/" className="p-2">
@@ -186,8 +197,11 @@ export const OnboardingForm: React.FC = () => {
         </Link>
       </View>
 
-      <View className="p-4">
-        <Text className="text-secondary text-center text-[16px] px-4 pb-5 pt-0">
+      <View className="p-4" style={{ marginBottom: 32 }}>
+        <Text
+          className="text-secondary text-center px-4 pb-5 pt-0"
+          style={{ fontSize: 16 }}
+        >
           <Text className="font-montserrat-medium">Completa tus datos </Text>
           <Text className="font-montserrat-semibold">
             como figuran en tu documento de identidad
@@ -211,6 +225,9 @@ export const OnboardingForm: React.FC = () => {
           <View style={styles.documentRow}>
             <View style={styles.pickerContainer}>
               <CustomPicker
+                variant="sheet"
+                showAccept
+                label=""
                 options={documentTypes}
                 selectedValue={documentTypePicker.selectedValue}
                 onValueChange={(v) => documentTypePicker.selectValue(v)}
@@ -221,7 +238,6 @@ export const OnboardingForm: React.FC = () => {
                   !documentTypePicker.selectedValue &&
                   documentTypePicker.wasTouched
                 }
-                placeholder="Tipo"
               />
             </View>
             <View style={styles.documentInputContainer}>
@@ -261,44 +277,42 @@ export const OnboardingForm: React.FC = () => {
           </View>
         </View>
 
-        <View className="flex-row items-center bg-blue-lighter py-4 px-4 mt-1 mb-4 rounded-md">
-          <InfoIcon />
-          <Text
-            style={styles.textInfo}
-            className="text-blue-dark ml-2 flex-1 font-montserrat-medium text-justify"
-          >
-            Tu documento de identidad debe coincidir con tus datos para evitar
-            inconvenientes al momento de hacer una primera operación
-          </Text>
+        <MessageBox />
+
+        <View style={styles.inputRow}>
+          <CustomInputOnboarding
+            label="Celular"
+            placeholder="N° de celular"
+            value={phoneInput.value}
+            onChangeText={phoneInput.handleChange}
+            onBlur={phoneInput.handleBlur}
+            keyboardType="phone-pad"
+            isError={!!phoneInput.error}
+            errorMessage={phoneInput.errorMessage}
+            style={styles.phoneInput}
+          />
+
+          <CustomInputOnboarding
+            label="Fecha de nacimiento"
+            placeholder="DD/MM/AAAA"
+            value={birthDateInput.value}
+            onChangeText={(t) => birthDateInput.handleChange(formatFecha(t))}
+            onBlur={birthDateInput.handleBlur}
+            keyboardType="numeric"
+            isError={!!birthDateInput.error}
+            errorMessage={birthDateInput.errorMessage}
+            style={styles.birthDateInput}
+          />
         </View>
-
-        <CustomInputOnboarding
-          label="Celular"
-          placeholder="N° de celular"
-          value={phoneInput.value}
-          onChangeText={phoneInput.handleChange}
-          onBlur={phoneInput.handleBlur}
-          keyboardType="phone-pad"
-          isError={!!phoneInput.error}
-          errorMessage={phoneInput.errorMessage}
-        />
-
-        <CustomInputOnboarding
-          label="Fecha de nacimiento"
-          placeholder="DD/MM/AAAA"
-          value={birthDateInput.value}
-          onChangeText={(t) => birthDateInput.handleChange(formatFecha(t))}
-          onBlur={birthDateInput.handleBlur}
-          keyboardType="numeric"
-          isError={!!birthDateInput.error}
-          errorMessage={birthDateInput.errorMessage}
-        />
 
         <View style={styles.container}>
           <Text className="text-gray-60 mb-2 font-montserrat-medium">
             ¿Dónde cambiabas antes? (Opcional)
           </Text>
           <CustomPicker
+            variant="sheet"
+            showAccept
+            label=""
             options={previousExchangeLocations}
             selectedValue={locationPicker.selectedValue}
             onValueChange={(v) => locationPicker.selectValue(v)}
@@ -374,7 +388,7 @@ export const OnboardingForm: React.FC = () => {
         onClose={() => setIsDuplicateModalVisible(false)}
         message={errorMessage}
       />
-    </ScrollView>
+    </>
   );
 };
 
@@ -382,6 +396,22 @@ const styles = StyleSheet.create({
   container: {
     marginBottom: 24,
     width: '100%',
+  },
+  containerSuccess: {
+    flex: 1,
+  },
+  inputRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    width: '100%',
+    gap: 8,
+  },
+  phoneInput: {
+    width: '40%',
+  },
+  birthDateInput: {
+    width: '60%',
   },
   inputContainer: {
     flexDirection: 'row',

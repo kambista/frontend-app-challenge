@@ -5,9 +5,11 @@ import { SplashScreen, Stack } from 'expo-router';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { useEffect } from 'react';
 import { useFonts } from 'expo-font';
+import { useBackgroundColor } from '../contexts/BackgroundColorContext';
 
 export default function RootLayout() {
   SplashScreen.preventAutoHideAsync();
+  const { backgroundColor } = useBackgroundColor();
 
   const [fontsLoaded] = useFonts({
     'Montserrat-Thin': require('../assets/fonts/Montserrat-Thin.ttf'),
@@ -19,6 +21,7 @@ export default function RootLayout() {
     'Montserrat-Bold': require('../assets/fonts/Montserrat-Bold.ttf'),
     'Montserrat-ExtraBold': require('../assets/fonts/Montserrat-ExtraBold.ttf'),
     'Montserrat-Black': require('../assets/fonts/Montserrat-Black.ttf'),
+    'Montserrat-italic': require('../assets/fonts/Montserrat-MediumItalic.ttf'),
   });
 
   useEffect(() => {
@@ -38,7 +41,7 @@ export default function RootLayout() {
         screenOptions={{
           headerShown: false,
           contentStyle: {
-            backgroundColor: '#ffffff',
+            backgroundColor: backgroundColor,
           },
           gestureEnabled: true,
           fullScreenGestureEnabled: true,
