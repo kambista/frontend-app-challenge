@@ -22,6 +22,7 @@ const onboardingSchema = z.object({
   name: z.string().min(1, 'Ingresa tus nombres y apellidos'),
   dni: z.string().min(8, 'Ingresa un DNI válido'),
   phone: z.string().min(1, 'Ingresa tu número de celular'),
+  dniType: z.string().min(1, 'Selecciona el tipo de documento'),
   birthdate: z
     .string()
     .refine((val) => {
