@@ -5,8 +5,8 @@ import React, { useState } from "react";
 import { Modal, Platform, Pressable, Text, View } from "react-native";
 
 interface DatePickerProps {
-  value?: Date;
-  onChange?: (date: Date) => void;
+  value?: string | Date;
+  onChange?: (date: string) => void;
   label?: string;
   error?: string;
   placeholder?: string;
@@ -22,48 +22,43 @@ const DatePicker = ({
   onChange,
   label,
   error,
-  placeholder = "DD/MM/YYYY",
+  placeholder = "DD/MM/AAAA",
   className,
   disabled = false,
   minimumDate,
   maximumDate,
-  formatDate,
+  formatDate
 }: DatePickerProps) => {
-  const [date, setDate] = useState<Date | undefined>(value);
+  const [date, setDate] = useState<Date | null>(() => {
+    if (value === "" || value === undefined || value === null) {
+      return null;
+    }
+    return typeof value === "string" ? new Date(value) : value;
+  });
   const [showPicker, setShowPicker] = useState(false);
 
-  const formatDisplayDate = (date?: Date): string => {
+  const formatDisplayDate = (date?: Date | null): string => {
     if (!date) return placeholder;
-
-    if (formatDate) {
-      return formatDate(date);
-    }
+    if (formatDate) return formatDate(date);
 
     return date.toLocaleDateString("es-ES", {
       day: "2-digit",
       month: "2-digit",
-      year: "numeric",
+      year: "numeric"
     });
   };
 
   const handleDateChange = (event: any, selectedDate?: Date) => {
     const currentDate = selectedDate || date;
 
-    if (Platform.OS === "android") {
-      setShowPicker(false);
-    }
-
+    if (Platform.OS === "android") setShowPicker(false);
     setDate(currentDate);
 
-    if (onChange && currentDate) {
-      onChange(currentDate);
-    }
+    if (onChange && currentDate) onChange(currentDate.toISOString());
   };
 
   const toggleDatePicker = () => {
-    if (!disabled) {
-      setShowPicker(!showPicker);
-    }
+    if (!disabled) setShowPicker(!showPicker);
   };
 
   return (
@@ -74,13 +69,13 @@ const DatePicker = ({
         className={cn(
           "flex-row items-center justify-between border rounded-lg px-4 py-3 border-gray-25 h-11",
           disabled ? "opacity-60 bg-gray-100" : "",
-          error ? "border-red-500" : "",
+          error ? "border-red-500" : ""
         )}
       >
         <Text
           className={cn(
             "font-montserrat-medium leading-tight",
-            date ? "text-gray-60" : "text-gray-40",
+            date ? "text-primary-dark" : "text-gray-40"
           )}
         >
           {formatDisplayDate(date)}
