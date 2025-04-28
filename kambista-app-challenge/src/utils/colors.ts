@@ -1,0 +1,25 @@
+const KambistaColors = {
+  primary: '#00E3C2',
+  primaryLight: '#B2E7DF',
+  secondary: '#060F26',
+  secondaryLight: '#2D313D',
+  secondaryUltraLight: '#606B89',
+  informative: '#456DD3',
+  informativeLight: '#D2E9FF',
+  informativeUltraLight: '#E8EEF4',
+  informativeDark: '#082774',
+  success: '#05BE50',
+  successLight: '#D9FFE8',
+  warning: '#FF3D4A',
+  warningLight: '#F1E1E4',
+  gray60: '#686868',
+  gray40: '#A7A7A7',
+  gray25: '#E0E0E0',
+  gray21: '#EEEDED',
+  gray20: '#EFF0F6',
+  gray10: '#F6F6F9',
+  highlight: '##F9F0E9',
+  highlightDark: '#7B3F0A',
+};
+
+export default KambistaColors;

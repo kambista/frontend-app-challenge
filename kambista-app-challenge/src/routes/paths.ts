@@ -1,0 +1,15 @@
+export const Paths = {
+  login: 'login',
+  onboarding: 'onboarding',
+  onboardingForm: 'onboardingForm',
+  onboardingFinish: 'onboardingFinish',
+  app: 'app',
+  home:'home',
+  calculator:'calculator',
+  operation: 'operation',
+  operationFinish: 'operationFinish',
+  history: 'history',
+  profile: 'profile',
+  accounts: 'accounts',
+  koinks: 'koinks',
+}
