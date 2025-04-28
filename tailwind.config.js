@@ -3,7 +3,7 @@ module.exports = {
   content: [
     "./app/**/*.{js,jsx,ts,tsx}",
     "./components/**/*.{js,jsx,ts,tsx}",
-    "./features/**/*.{js,jsx,ts,tsx}",
+    "./modules/**/*.{js,jsx,ts,tsx}"
   ],
   presets: [require("nativewind/preset")],
   theme: {
@@ -20,7 +20,7 @@ module.exports = {
         "informative-blue-dark": "#082774",
         "informative-blue-light": "#D2E9FF",
         "warning-light": "#F9F0E9",
-        "warning-dark": "#7B3F0A",
+        "warning-dark": "#7B3F0A"
       },
       fontFamily: {
         "montserrat-light": ["Montserrat_300Light"],
@@ -29,12 +29,12 @@ module.exports = {
         "montserrat-semibold": ["Montserrat_600SemiBold"],
         "montserrat-bold": ["Montserrat_700Bold"],
         "montserrat-black": ["Montserrat_900Black"],
-        "montserrat-italic": ["Montserrat_400Regular_Italic"],
+        "montserrat-italic": ["Montserrat_400Regular_Italic"]
       },
       boxShadow: {
-        coupon: "0px 4px 4px 0px rgba(0, 0, 0, 0.25);",
-      },
-    },
+        coupon: "0px 4px 4px 0px rgba(0, 0, 0, 0.25);"
+      }
+    }
   },
-  plugins: [],
+  plugins: []
 };
