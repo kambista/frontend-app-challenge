@@ -64,7 +64,7 @@ export function HomeScreen(){
   }
 
   return(
-    <ScreenWrapper scrollable style={{backgroundColor: '#ECECECFF'}}>
+    <ScreenWrapper scrollable style={{backgroundColor: '#F0EEEEFF'}}>
       <View className="flex-1 justify-center items-center">
         <Image source={logo} className="w-48 h-20" resizeMode="contain" />
         <View className="bg-white rounded-lg">

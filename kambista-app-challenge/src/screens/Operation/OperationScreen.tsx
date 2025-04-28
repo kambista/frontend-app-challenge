@@ -7,7 +7,7 @@ export function OperationScreen(){
   const {step} = useStepOperationStore();
   const currentStep = operationSteps[step];
   return(
-    <ScreenWrapper style={{backgroundColor: '#F1F0F0FF'}}>
+    <ScreenWrapper style={{backgroundColor: '#F0EEEEFF'}}>
       <ProgressSteps currentStep={currentStep} />
       <currentStep.component/>
     </ScreenWrapper>

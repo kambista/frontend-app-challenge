@@ -8,14 +8,17 @@ import { StackNavParamList } from "../../navigation/BuildNavigation";
 import { Paths } from "../../routes/paths";
 import { useUserStore } from "../../store/userStore";
 import KButton from "../../components/Button";
+import { useStepOperationStore } from "../../store/StepOperationStore";
 
 export function OperationFinish(){
   const navigation = useNavigation<NativeStackNavigationProp<StackNavParamList>>();
+  const {setStep} = useStepOperationStore();
   const goToHome = () => {
+    setStep(0);
     navigation.replace(Paths.app);
   }
   return(
-    <ScreenWrapper style={{backgroundColor: '#F1F0F0FF'}}>
+    <ScreenWrapper style={{backgroundColor: '#F0EEEEFF'}}>
       <View className="flex-1 items-center justify-center gap-7 px-6">
         <View className="border-2 border-k-gray-25 p-4 rounded-2xl w-full bg-white">
           <View className="justify-center items-center">
