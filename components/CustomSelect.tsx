@@ -1,30 +1,29 @@
-import {
-  View,
-  Text,
-  Pressable,
-  Modal,
-  TouchableOpacity,
-  ScrollView,
-  TouchableWithoutFeedback,
-} from "react-native";
-import React from "react";
-import FormField from "./FormField";
 import { cn } from "@/utils/cn";
-import ArrowLeftIcon from "./Icons/ArrowLeftIcon";
+import React from "react";
+import {
+  Modal,
+  Pressable,
+  ScrollView,
+  Text,
+  TouchableOpacity,
+  TouchableWithoutFeedback,
+  View
+} from "react-native";
 import Divider from "./Divider";
-import { SafeAreaView } from "react-native-safe-area-context";
+import FormField from "./FormField";
+import ArrowLeftIcon from "./Icons/ArrowLeftIcon";
 import SquarePlusIcon from "./Icons/SquarePlusIcon";
 
 interface SelectOption<T = any> {
   label: string;
-  value: string | number;
+  value: string;
   data?: T;
 }
 
 interface SelectProps<T = any> {
   options: SelectOption<T>[];
-  value?: string | number;
-  onValueChange?: (value: string | number, option?: SelectOption<T>) => void;
+  value: string;
+  onValueChange?: (value: string, option?: SelectOption<T>) => void;
   placeholder?: string;
   className?: string;
   labelClassName?: string;
@@ -47,7 +46,7 @@ interface SelectProps<T = any> {
 export interface OptionProps<T = any> {
   option: SelectOption<T>;
   isSelected: boolean;
-  onSelect: (value: string | number, option: SelectOption<T>) => void;
+  onSelect: (value: string, option: SelectOption<T>) => void;
 }
 
 export interface SingleValueProps<T = any> {
@@ -65,10 +64,12 @@ const DefaultOption = ({ option, isSelected, onSelect }: OptionProps) => (
     onPress={() => onSelect(option.value, option)}
     className={cn(
       "px-4 py-3 flex-row justify-between items-center",
-      isSelected ? "bg-gray-10" : "",
+      isSelected ? "bg-gray-10" : ""
     )}
   >
-    <Text className="text-gray-60 font-montserrat-medium">{option.label}</Text>
+    <Text className="text-primary-dark font-montserrat-medium">
+      {option.label}
+    </Text>
     {isSelected && (
       <View className="items-center justify-center w-5 h-5 rounded-full bg-primary">
         <Text className="text-xs font-bold text-white">✓</Text>
@@ -79,12 +80,12 @@ const DefaultOption = ({ option, isSelected, onSelect }: OptionProps) => (
 
 const DefaultSingleValue = ({
   selectedOption,
-  placeholder,
+  placeholder
 }: SingleValueProps) => (
   <Text
     className={cn(
       "font-montserrat-medium leading-relaxed",
-      selectedOption ? "text-gray-60" : "text-gray-40",
+      selectedOption ? "text-primary-dark" : "text-gray-40"
     )}
   >
     {selectedOption?.label || placeholder}
@@ -119,7 +120,7 @@ const CustomSelect = ({
   createOptionLabel = "Crear nuevo",
   onCreateOption,
   components = {},
-  maxHeight = 300,
+  maxHeight = 300
 }: SelectProps) => {
   const [isPickerVisible, setIsPickerVisible] = React.useState(false);
   const [selectedValue, setSelectedValue] = React.useState(value);
@@ -134,10 +135,7 @@ const CustomSelect = ({
     }
   };
 
-  const handleValueChange = (
-    itemValue: string | number,
-    option?: SelectOption,
-  ) => {
+  const handleValueChange = (itemValue: string, option?: SelectOption) => {
     setSelectedValue(itemValue);
     if (onValueChange) {
       onValueChange(itemValue, option);
@@ -146,7 +144,7 @@ const CustomSelect = ({
   };
 
   const selectedOption = options.find(
-    (option) => option.value === selectedValue,
+    (option) => option.value === selectedValue
   );
 
   const Option = components.Option || DefaultOption;
@@ -162,7 +160,7 @@ const CustomSelect = ({
           className={cn(
             "flex flex-row justify-between border rounded-lg px-4 py-2 border-gray-25 h-11 bg-white",
             disabled ? "opacity-60 bg-gray-100" : "",
-            error ? "border-red-500" : "",
+            error ? "border-red-500" : ""
           )}
         >
           <View className="justify-center flex-1">
@@ -196,7 +194,7 @@ const CustomSelect = ({
                   <Text
                     className={cn(
                       "text-base text-center text-gray-60 font-montserrat-semibold",
-                      modalTitleClassName,
+                      modalTitleClassName
                     )}
                   >
                     {modalTitle}
@@ -207,6 +205,7 @@ const CustomSelect = ({
 
                 <ScrollView
                   className="w-full py-3 pb-10"
+                  contentContainerClassName="pb-10"
                   style={{ maxHeight }}
                   showsVerticalScrollIndicator={false}
                 >
