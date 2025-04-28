@@ -4,33 +4,23 @@ import { Pressable, Text } from "react-native";
 
 interface TabProps {
   title: string;
-  variant?: "active" | "inactive";
+  isActive?: boolean;
   onPress?: () => void;
 }
 
-const Tab: React.FC<TabProps> = ({ title, variant = "inactive", onPress }) => {
-  const variantClasses = {
-    active: "bg-primary-dark",
-    inactive: "bg-white",
-  };
-
-  const textVariantClasses = {
-    active: "text-white",
-    inactive: "text-gray-40",
-  };
-
+const Tab = ({ title, isActive = false, onPress }: TabProps) => {
   return (
     <Pressable
       className={cn(
         "flex-row flex-1 justify-center p-3 rounded-t-md",
-        variantClasses[variant],
+        isActive ? "bg-primary-dark" : "bg-white"
       )}
       onTouchEnd={onPress}
     >
       <Text
         className={cn(
           "text-sm font-montserrat-bold",
-          textVariantClasses[variant],
+          isActive ? "text-white" : "text-gray-40"
         )}
       >
         {title}

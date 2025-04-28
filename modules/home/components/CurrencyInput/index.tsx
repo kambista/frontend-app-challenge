@@ -3,23 +3,24 @@ import React from "react";
 
 interface CurrencyInputProps {
   value: number | string;
+  label: string;
   currencyLabel: string;
-  type?: "in" | "out";
   onChange: (value: number | string) => void;
 }
 
-const CurrencyInput: React.FC<CurrencyInputProps> = ({
+const CurrencyInput = ({
   value,
+  label,
   currencyLabel,
-  type = "in",
-  onChange,
-}) => {
+  onChange
+}: CurrencyInputProps) => {
   const handleChange = (text: string) => {
-    const numericValue = parseFloat(text.replace(/[^0-9.]/g, ""));
-    if (!isNaN(numericValue)) {
-      onChange(numericValue);
+    const sanitizedText = text.replace(/[^0-9.]/g, "");
+    const hasMultipleDots = (sanitizedText.match(/\./g) || []).length > 1;
+    if (!hasMultipleDots) {
+      onChange(sanitizedText);
     } else {
-      onChange("");
+      onChange(sanitizedText.slice(0, sanitizedText.lastIndexOf(".")));
     }
   };
 
@@ -27,7 +28,7 @@ const CurrencyInput: React.FC<CurrencyInputProps> = ({
     <View className="flex-row items-center justify-center h-20 rounded-lg bg-gray-25">
       <View className="flex-col justify-start flex-1 px-5">
         <Text className="text-sm font-montserrat-medium text-primary-dark">
-          {type === "in" ? "¿Cuánto envías?" : "Entonces recibes"}
+          {label}
         </Text>
         <TextInput
           className="w-full py-0 text-xl border border-transparent rounded-lg font-montserrat-bold text-primary-dark"
@@ -39,9 +40,8 @@ const CurrencyInput: React.FC<CurrencyInputProps> = ({
           autoCapitalize="none"
           autoCorrect={false}
           returnKeyType="done"
-          onSubmitEditing={() => {}}
-          onChangeText={(text) => {}}
-          value={"123.45"}
+          onChangeText={handleChange}
+          value={value.toString()}
         />
       </View>
       <View className="flex items-center justify-center w-32 h-full px-3 rounded-r-lg bg-primary-dark font-montserrat-black">
