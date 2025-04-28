@@ -129,8 +129,14 @@ const ExchangeForm = ({ router, currentExchange }: ExchangeFormProps) => {
 
   const submitForm = async (value: ExchangeFormTypes) => {
     setExchangeData({
-      amountIn: { amount: Number(value.amountIn), currency: "PEN" },
-      amountOut: { amount: Number(value.amountOut), currency: "USD" },
+      amountIn: {
+        amount: Number(value.amountIn),
+        currency: mode === "buy" ? "PEN" : "USD"
+      },
+      amountOut: {
+        amount: Number(value.amountOut),
+        currency: mode === "buy" ? "USD" : "PEN"
+      },
       ask: CalculateExchange.data?.tc.ask,
       bid: CalculateExchange.data?.tc.bid,
       couponCode: value.couponCode || null
