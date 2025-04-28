@@ -1,12 +1,12 @@
 import ArrowLeftIcon from "@/components/Icons/ArrowLeftIcon";
-import StepIndicator from "@/features/Transactions/StepIndicator";
+import StepIndicator from "@/modules/transactions/components/StepIndicator";
 import TopBar from "@/components/TopBar";
 import { useRouter } from "expo-router";
 import React from "react";
 import { ScrollView, Text, View } from "react-native";
-import FillOutStep from "@/features/Transactions/Steps/FillOut";
-import TransferStep from "@/features/Transactions/Steps/Transfer";
-import ConfirmationStep from "@/features/Transactions/Steps/Confirmation";
+import FillOutStep from "@/modules/transactions/screens/Steps/FillOut";
+import TransferStep from "@/modules/transactions/screens/Steps/Transfer/CompanyInfo";
+import ConfirmationStep from "@/modules/transactions/screens/Steps/Confirmation";
 
 const TransactionsScreen = () => {
   const [step, setStep] = React.useState(0);
@@ -20,7 +20,7 @@ const TransactionsScreen = () => {
       <ConfirmationStep
         onContinue={() => router.push("/(operations)/summary")}
       />
-    ),
+    )
   };
 
   return (

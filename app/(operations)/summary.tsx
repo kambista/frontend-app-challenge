@@ -1,17 +1,20 @@
 import Button from "@/components/Button";
 import Divider from "@/components/Divider";
-import ColumnInfo from "@/features/Transactions/ColumnInfo";
+import ColumnInfo from "@/modules/transactions/components/ColumnInfo";
 import { useRouter } from "expo-router";
 import React from "react";
 import { Image, Platform, StyleSheet, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { LinearGradient } from "expo-linear-gradient";
+import { useExchangeStore } from "@/stores/useExchangeStore";
+import { formatCurrency } from "@/utils/helpers";
 
 const SummaryScreen = () => {
   const router = useRouter();
+  const { exchangeData } = useExchangeStore();
 
   return (
-    <SafeAreaView className="flex-1 p-6">
+    <SafeAreaView className="flex-1 p-6 bg-gray-10">
       <View className="flex-col gap-3 mb-8">
         <View className="flex-col items-center w-full gap-3 p-6 bg-white border rounded-lg border-gray-23">
           <View className="flex-col items-center gap-8">
@@ -35,7 +38,14 @@ const SummaryScreen = () => {
             <Text className="text-sm font-montserrat-medium text-primary-dark">
               *Usa tu código para dar seguimiento a tu operación.
             </Text>
-            <ColumnInfo name="Monto a recibir" value="S/ 343.00" variant="md" />
+            <ColumnInfo
+              name="Monto a recibir"
+              value={formatCurrency(
+                exchangeData?.amountOut?.amount ?? 0,
+                exchangeData?.amountOut?.currency === "PEN" ? "S/" : "$"
+              )}
+              variant="md"
+            />
             <ColumnInfo
               name="Tiempo estimado de espera"
               value="20h 15min"
@@ -100,14 +110,14 @@ const SummaryScreen = () => {
 const styles = StyleSheet.create({
   gradient: {
     borderRadius: 10,
-    overflow: "hidden",
+    overflow: "hidden"
   },
   textShadow: {
     shadowOffset: { width: 10, height: 10 },
     shadowColor: "black",
     shadowOpacity: 1,
-    elevation: 3,
-  },
+    elevation: 3
+  }
 });
 
 export default SummaryScreen;
