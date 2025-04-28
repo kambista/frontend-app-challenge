@@ -14,54 +14,54 @@ export default function TabsLayout() {
         tabBarInactiveTintColor: "#A7A7A7",
         headerShown: false,
         tabBarStyle: {
-          height: Platform.OS === "ios" ? 100 : 80,
+          height: Platform.OS === "ios" ? 70 : 80,
           shadowColor: "none",
           elevation: 0,
           borderColor: "transparent",
-          paddingTop: 10,
+          paddingTop: 10
         },
         tabBarLabelStyle: {
           fontSize: 12,
-          fontFamily: "Montserrat-Medium",
+          fontFamily: "Montserrat-Medium"
         },
         tabBarButton: (props) => (
           <Pressable {...props} android_ripple={{ color: "transparent" }} />
-        ),
+        )
       }}
     >
       <Tabs.Screen
         name="home"
         options={{
           title: "Inicio",
-          tabBarIcon: ({ color }) => <ExchangeIcon size={24} color={color} />,
+          tabBarIcon: ({ color }) => <ExchangeIcon size={24} color={color} />
         }}
       />
       <Tabs.Screen
         name="history"
         options={{
           title: "Historial",
-          tabBarIcon: ({ color }) => <HistoryIcon size={24} color={color} />,
+          tabBarIcon: ({ color }) => <HistoryIcon size={24} color={color} />
         }}
       />
       <Tabs.Screen
         name="accounts"
         options={{
           title: "Cuentas",
-          tabBarIcon: ({ color }) => <AccountIcon size={24} color={color} />,
+          tabBarIcon: ({ color }) => <AccountIcon size={24} color={color} />
         }}
       />
       <Tabs.Screen
         name="koinks"
         options={{
           title: "Koinks",
-          tabBarIcon: ({ color }) => <KoinksIcon size={24} color={color} />,
+          tabBarIcon: ({ color }) => <KoinksIcon size={24} color={color} />
         }}
       />
       <Tabs.Screen
         name="profile"
         options={{
           title: "Perfil",
-          tabBarIcon: ({ color }) => <ProfileIcon size={24} color={color} />,
+          tabBarIcon: ({ color }) => <ProfileIcon size={24} color={color} />
         }}
       />
     </Tabs>
