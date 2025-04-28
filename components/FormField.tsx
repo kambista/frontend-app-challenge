@@ -10,6 +10,7 @@ interface FormFieldProps {
   labelClassName?: string;
   errorClassName?: string;
   helpText?: string;
+  isOptional?: boolean;
 }
 
 const FormField = ({
@@ -20,6 +21,7 @@ const FormField = ({
   labelClassName,
   errorClassName,
   helpText,
+  isOptional = false
 }: FormFieldProps) => {
   return (
     <View className={cn("flex-col gap-2", className)}>
@@ -30,7 +32,7 @@ const FormField = ({
             labelClassName
           )}
         >
-          {label}
+          {label} {isOptional && "(Opcional)"}
         </Text>
       )}
 

@@ -27,30 +27,30 @@ const Button = ({
   fullWidth = false,
   isLoading = false,
   leftIcon,
-  rightIcon,
+  rightIcon
 }: ButtonProps) => {
   const sizeClasses = {
     sm: "py-1.5 px-3",
     md: "py-2.5 px-5",
-    lg: "py-4 px-7",
+    lg: "py-4 px-7"
   };
 
   const textSizeClasses = {
     sm: "text-xs",
     md: "text-sm",
-    lg: "text-sm",
+    lg: "text-sm"
   };
 
   const variantClasses = {
     "filled-primary": "bg-primary rounded-lg",
     "filled-primary-dark": "bg-primary-dark rounded-lg",
-    "outline-primary-dark": "bg-transparent border border-primary-dark",
+    "outline-primary-dark": "bg-transparent border border-primary-dark"
   };
 
   const textVariantClasses = {
     "filled-primary": "text-black",
     "filled-primary-dark": "text-white",
-    "outline-primary-dark": "text-primary-dark",
+    "outline-primary-dark": "text-primary-dark"
   };
 
   return (
@@ -62,20 +62,20 @@ const Button = ({
         sizeClasses[size],
         variantClasses[variant],
         fullWidth ? "w-full" : "",
-        disabled ? "opacity-60" : "",
-        isLoading ? "opacity-80" : "",
+        disabled ? "opacity-40" : "",
+        isLoading ? "opacity-40" : "",
         className
       )}
       style={({ pressed }) => [
         {
-          opacity: pressed ? 0.85 : 1,
-        },
+          opacity: pressed ? 0.85 : 1
+        }
       ]}
     >
       {isLoading ? (
         <ActivityIndicator
           size="small"
-          color={variant === "filled-primary" ? "white" : "#00E3C2"}
+          color={variant === "filled-primary" ? "black" : "#00E3C2"}
           className="mr-2"
         />
       ) : leftIcon ? (

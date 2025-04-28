@@ -1,5 +1,5 @@
 import React from "react";
-import { Pressable, Text, View } from "react-native";
+import { Platform, Pressable, Text, View } from "react-native";
 import Animated from "react-native-reanimated";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { cn } from "@/utils/cn";
@@ -23,30 +23,15 @@ const TopBar = ({
   onLeftPress,
   onRightPress,
   className,
-  titleClassName,
-  showShadow = false,
-  scrollOffset,
+  titleClassName
 }: TopBarProps) => {
-  const insets = useSafeAreaInsets();
-
   return (
-    <Animated.View
+    <View
       className={cn(
-        "flex-row items-center justify-between bg-white z-10",
+        "flex-row items-center justify-between z-10 p-4 fixed",
+        Platform.OS === "ios" ? "top-0" : "mt-10",
         className
       )}
-      style={[
-        {
-          paddingTop: insets.top,
-          paddingLeft: Math.max(insets.left + 16, 16),
-          paddingRight: Math.max(insets.right + 16, 16),
-          paddingBottom: 12,
-          shadowColor: "#000",
-          shadowOffset: { width: 0, height: 2 },
-          shadowRadius: 3,
-          elevation: 4,
-        },
-      ]}
     >
       <View className="w-10">
         {leftIcon && (
@@ -83,7 +68,7 @@ const TopBar = ({
           </Pressable>
         )}
       </View>
-    </Animated.View>
+    </View>
   );
 };
 

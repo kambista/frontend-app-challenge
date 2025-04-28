@@ -1,6 +1,7 @@
 import { cn } from "@/utils/cn";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
+  ActivityIndicator,
   Modal,
   Pressable,
   ScrollView,
@@ -21,7 +22,7 @@ interface SelectOption<T = any> {
 }
 
 interface SelectProps<T = any> {
-  options: SelectOption<T>[];
+  options?: SelectOption<T>[] | Promise<SelectOption<T>[]>;
   value: string;
   onValueChange?: (value: string, option?: SelectOption<T>) => void;
   placeholder?: string;
@@ -39,8 +40,12 @@ interface SelectProps<T = any> {
     Option?: React.ComponentType<OptionProps<T>>;
     SingleValue?: React.ComponentType<SingleValueProps<T>>;
     CreateOption?: React.ComponentType<CreateOptionProps>;
+    LoadingState?: React.ComponentType<LoadingStateProps>;
+    ErrorState?: React.ComponentType<ErrorStateProps>;
   };
   maxHeight?: number;
+  loadOptions?: () => Promise<SelectOption<T>[]>;
+  loadOnOpen?: boolean;
 }
 
 export interface OptionProps<T = any> {
@@ -52,6 +57,16 @@ export interface OptionProps<T = any> {
 export interface SingleValueProps<T = any> {
   selectedOption?: SelectOption<T>;
   placeholder: string;
+  isLoading?: boolean;
+}
+
+export interface LoadingStateProps {
+  message?: string;
+}
+
+export interface ErrorStateProps {
+  message: string;
+  onRetry?: () => void;
 }
 
 interface CreateOptionProps {
@@ -80,7 +95,8 @@ const DefaultOption = ({ option, isSelected, onSelect }: OptionProps) => (
 
 const DefaultSingleValue = ({
   selectedOption,
-  placeholder
+  placeholder,
+  isLoading
 }: SingleValueProps) => (
   <Text
     className={cn(
@@ -88,8 +104,35 @@ const DefaultSingleValue = ({
       selectedOption ? "text-primary-dark" : "text-gray-40"
     )}
   >
-    {selectedOption?.label || placeholder}
+    {isLoading ? "Cargando..." : selectedOption?.label || placeholder}
   </Text>
+);
+
+const DefaultLoadingState = ({
+  message = "Cargando opciones..."
+}: LoadingStateProps) => (
+  <View className="items-center justify-center py-8">
+    <ActivityIndicator size="large" color="#5F2EEA" />
+    <Text className="mt-2 text-sm text-gray-60 font-montserrat-medium">
+      {message}
+    </Text>
+  </View>
+);
+
+const DefaultErrorState = ({ message, onRetry }: ErrorStateProps) => (
+  <View className="items-center justify-center py-8">
+    <Text className="mb-4 text-sm text-red-500 font-montserrat-medium">
+      {message}
+    </Text>
+    {onRetry && (
+      <TouchableOpacity
+        onPress={onRetry}
+        className="px-4 py-2 rounded-lg bg-primary"
+      >
+        <Text className="text-white font-montserrat-semibold">Reintentar</Text>
+      </TouchableOpacity>
+    )}
+  </View>
 );
 
 const DefaultCreateOption = ({ label, onPress }: CreateOptionProps) => (
@@ -105,7 +148,7 @@ const DefaultCreateOption = ({ label, onPress }: CreateOptionProps) => (
 );
 
 const CustomSelect = ({
-  options,
+  options: initialOptions,
   value,
   onValueChange,
   placeholder = "Seleccionar...",
@@ -120,18 +163,60 @@ const CustomSelect = ({
   createOptionLabel = "Crear nuevo",
   onCreateOption,
   components = {},
-  maxHeight = 300
+  maxHeight = 300,
+  loadOptions,
+  loadOnOpen = true
 }: SelectProps) => {
-  const [isPickerVisible, setIsPickerVisible] = React.useState(false);
-  const [selectedValue, setSelectedValue] = React.useState(value);
+  const [isPickerVisible, setIsPickerVisible] = useState(false);
+  const [selectedValue, setSelectedValue] = useState(value);
+  const [options, setOptions] = useState<SelectOption[]>([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [loadError, setLoadError] = useState<string | null>(null);
 
-  React.useEffect(() => {
+  useEffect(() => {
     setSelectedValue(value);
   }, [value]);
 
-  const showPicker = () => {
-    if (!disabled) {
-      setIsPickerVisible(true);
+  useEffect(() => {
+    if (Array.isArray(initialOptions)) {
+      setOptions(initialOptions);
+    }
+  }, [initialOptions]);
+
+  const fetchOptions = async () => {
+    if (!loadOptions && !initialOptions) return;
+
+    setIsLoading(true);
+    setLoadError(null);
+
+    try {
+      let result: SelectOption[] = [];
+
+      if (loadOptions) {
+        result = await loadOptions();
+      } else if (initialOptions) {
+        result = Array.isArray(initialOptions)
+          ? initialOptions
+          : await initialOptions;
+      }
+
+      setOptions(result);
+    } catch (err) {
+      setLoadError("Error al cargar las opciones");
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const showPicker = async () => {
+    if (disabled) return;
+    setIsPickerVisible(true);
+
+    if (
+      loadOnOpen &&
+      (loadOptions || (initialOptions && !Array.isArray(initialOptions)))
+    ) {
+      await fetchOptions();
     }
   };
 
@@ -143,13 +228,15 @@ const CustomSelect = ({
     setIsPickerVisible(false);
   };
 
-  const selectedOption = options.find(
+  const selectedOption = options?.find(
     (option) => option.value === selectedValue
   );
 
   const Option = components.Option || DefaultOption;
   const SingleValue = components.SingleValue || DefaultSingleValue;
   const CreateOption = components.CreateOption || DefaultCreateOption;
+  const LoadingState = components.LoadingState || DefaultLoadingState;
+  const ErrorState = components.ErrorState || DefaultErrorState;
 
   return (
     <View className={cn("flex flex-col gap-2 relative", className)}>
@@ -167,6 +254,7 @@ const CustomSelect = ({
             <SingleValue
               selectedOption={selectedOption}
               placeholder={placeholder}
+              isLoading={isLoading && !isPickerVisible}
             />
           </View>
 
@@ -203,39 +291,49 @@ const CustomSelect = ({
 
                 <Divider />
 
-                <ScrollView
-                  className="w-full py-3 pb-10"
-                  contentContainerClassName="pb-10"
-                  style={{ maxHeight }}
-                  showsVerticalScrollIndicator={false}
-                >
-                  {options.map((option) => (
-                    <React.Fragment key={option.value}>
-                      <Option
-                        option={option}
-                        isSelected={selectedValue === option.value}
-                        onSelect={handleValueChange}
-                      />
-                      {showCreateOption ||
-                      options[options.length - 1] !== option ? (
-                        <Divider
-                          orientation="horizontal"
-                          className="bg-slate-200"
-                        />
-                      ) : null}
-                    </React.Fragment>
-                  ))}
-
-                  {showCreateOption && onCreateOption && (
-                    <CreateOption
-                      label={createOptionLabel}
-                      onPress={() => {
-                        onCreateOption();
-                        setIsPickerVisible(false);
-                      }}
-                    />
+                <View className="w-full py-3 pb-10" style={{ maxHeight }}>
+                  {isLoading ? (
+                    <LoadingState />
+                  ) : loadError ? (
+                    <ErrorState message={loadError} onRetry={fetchOptions} />
+                  ) : (
+                    <ScrollView
+                      contentContainerClassName="pb-8"
+                      showsVerticalScrollIndicator={false}
+                    >
+                      {options.map((option) => (
+                        <React.Fragment key={option.value}>
+                          <Option
+                            option={option}
+                            isSelected={selectedValue === option.value}
+                            onSelect={handleValueChange}
+                          />
+                          {showCreateOption ||
+                          options[options.length - 1] !== option ? (
+                            <Divider
+                              orientation="horizontal"
+                              className="bg-slate-200"
+                            />
+                          ) : null}
+                        </React.Fragment>
+                      ))}
+                      {showCreateOption && onCreateOption && (
+                        <>
+                          {options.length > 0 && (
+                            <Divider className="bg-slate-200" />
+                          )}
+                          <CreateOption
+                            label={createOptionLabel}
+                            onPress={() => {
+                              onCreateOption();
+                              setIsPickerVisible(false);
+                            }}
+                          />
+                        </>
+                      )}
+                    </ScrollView>
                   )}
-                </ScrollView>
+                </View>
               </View>
             </TouchableWithoutFeedback>
           </View>

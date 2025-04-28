@@ -1,32 +1,26 @@
 import { Picker } from "@react-native-picker/picker";
 import React from "react";
-import {
-  Modal,
-  Platform,
-  Pressable,
-  Text,
-  TouchableWithoutFeedback,
-  View,
-} from "react-native";
+import { Modal, Platform, Pressable, Text, View } from "react-native";
 import { cn } from "../utils/cn";
 import FormField from "./FormField";
 import ArrowLeftIcon from "./Icons/ArrowLeftIcon";
 
 interface SelectOption {
   label: string;
-  value: string | number;
+  value: string;
 }
 
 interface SelectProps {
   options: SelectOption[];
-  value?: string | number;
-  onValueChange?: (value: string | number) => void;
+  value?: string;
+  onValueChange?: (value: string) => void;
   placeholder?: string;
   className?: string;
   labelClassName?: string;
   disabled?: boolean;
   label?: string;
   error?: string;
+  isOptional?: boolean;
 }
 
 const BaseSelect = ({
@@ -39,11 +33,12 @@ const BaseSelect = ({
   disabled = false,
   label,
   error,
+  isOptional = false
 }: SelectProps) => {
   const [isPickerVisible, setIsPickerVisible] = React.useState(false);
   const [selectedValue, setSelectedValue] = React.useState(value);
 
-  const handleValueChange = (itemValue: string | number) => {
+  const handleValueChange = (itemValue: string) => {
     setSelectedValue(itemValue);
     onValueChange?.(itemValue);
   };
@@ -60,7 +55,12 @@ const BaseSelect = ({
 
   return (
     <View className={cn("flex flex-col gap-2 relative", className)}>
-      <FormField label={label} error={error} labelClassName={labelClassName}>
+      <FormField
+        label={label}
+        error={error}
+        labelClassName={labelClassName}
+        isOptional={isOptional}
+      >
         <Pressable
           onPress={showPicker}
           disabled={disabled}
@@ -73,7 +73,7 @@ const BaseSelect = ({
           <Text
             className={cn(
               "font-montserrat-medium leading-relaxed",
-              selectedValue ? "text-gray-60" : "text-gray-40"
+              selectedValue ? "text-primary-dark" : "text-gray-40"
             )}
           >
             {selectedLabel}
@@ -99,7 +99,14 @@ const BaseSelect = ({
           <View className="justify-end flex-1 bg-black/30">
             <View className="bg-white">
               <View className="flex-row justify-between px-6 py-2 bg-[#EEEDED]">
-                <Pressable onPress={() => setIsPickerVisible(false)}>
+                <Pressable
+                  onPress={() => {
+                    setIsPickerVisible(false);
+                    handleValueChange(
+                      String(selectedValue || options[0].value)
+                    );
+                  }}
+                >
                   <Text className="text-base font-semibold text-sky-400">
                     Aceptar
                   </Text>
