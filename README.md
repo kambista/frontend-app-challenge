@@ -20,7 +20,7 @@ Kambista App Challenge es una aplicación móvil creada para simular operaciones
 1. Clona este repositorio:
 
     ```bash
-    git clone <URL_DEL_REPOSITORIO>
+    git clone [<URL_DEL_REPOSITORIO>](https://github.com/eliobrayan/frontend-app-challenge.git)
     ```
 
 2. Navega al directorio de la aplicación:
