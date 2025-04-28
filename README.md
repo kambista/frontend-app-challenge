@@ -36,6 +36,8 @@ El `.apk` generado se encuentra en el repositorio como `kambista.apk`. Para ejcu
    - **Email**: john@gmail.com
    - **Contraseña**: 123456
 
+**Nota**: Si en caso tienes problemas con el apk, puedes probar la descarga del siguiente enlace [KAMBISTA APK](https://drive.google.com/file/d/1ScAVFeokfWnSNeb1mKD1RXCwycRrdZgS/view?usp=sharing).
+
 # 📚 Descripción del Proyecto
 
 ## 🚀 Tecnologías Utilizadas (Principales)
