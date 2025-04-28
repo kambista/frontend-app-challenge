@@ -2,16 +2,16 @@ module.exports = {
   extends: ["eslint:recommended", "plugin:react/recommended"],
   env: {
     "react-native/react-native": true,
-    jest: true,
+    jest: true
   },
   parser: "babel-eslint",
   parserOptions: {
     ecmaFeatures: {
       ecmaVersion: 8,
       experimentalObjectRestSpread: true,
-      jsx: true,
+      jsx: true
     },
-    sourceType: "module",
+    sourceType: "module"
   },
   plugins: ["react", "react-native"],
   rules: {
@@ -20,12 +20,12 @@ module.exports = {
     semi: ["error", "always"],
     "linebreak-style": ["error", "unix"],
     "no-undef": ["error"],
-    "no-console": ["off"],
+    "no-console": ["warn"],
     "no-unused-vars": ["warn"],
     "react/prop-types": ["warn"],
     "react-native/no-unused-styles": ["warn"],
     "react-native/split-platform-components": ["warn"],
     "react-native/no-inline-styles": ["warn"],
-    "react-native/no-color-literals": ["off"],
-  },
+    "react-native/no-color-literals": ["off"]
+  }
 };
