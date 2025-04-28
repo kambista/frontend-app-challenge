@@ -1,0 +1,14 @@
+[
+  {
+    "uuid": "95e3f5de-0bcf-42d7-ba25-53a71342aba0",
+    "userUuid": "b41be6b7-d2a4-40a1-85a4-8774a77da1d9",
+    "documentType": "dni",
+    "documentNumber": "12345678"
+  },
+  {
+    "uuid": "3d7b65cf-afe2-46de-8317-7dc0b92f6313",
+    "userUuid": "0dcbd3d5-90b5-43e7-ac1e-df09c0cd67bd",
+    "documentType": "passport",
+    "documentNumber": "A12345678"
+  }
+]

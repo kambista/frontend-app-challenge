@@ -1,0 +1,9 @@
+[
+  {
+    "uuid": "b41be6b7-d2a4-40a1-85a4-8774a77da1d9",
+    "name": "John Doe",
+    "email": "john@gmail.com",
+    "password": "123456",
+    "hasCompletedOnboarding": false
+  }
+]
