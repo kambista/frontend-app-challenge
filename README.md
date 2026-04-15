@@ -1,191 +1,135 @@
-# Prueba Técnica - Front-End Developer
+## Prueba Técnica Front-End - Kambista
 
-## 📱 Introducción
+Este repositorio corresponde a la implementacion del reto tecnico de **frontend**.  
+El objetivo principal de este README es documentar como ejecutar la app, que tecnologias se usaron y como se integra con la API para las pruebas.
 
-Este reto técnico consiste en desarrollar una aplicación de conversión de divisas con autenticación, siguiendo los diseños proporcionados en este [Figma](https://www.figma.com/design/0r7lOY04Vv3Ht9UJItO7yX/Prueba?node-id=0-1&node-type=canvas&t=xY3A9Vp4Xe4zmQCW-0).
-  
-### 🔧 Stack Tecnológico
-| Categoría       | Tecnologías                |
-|-----------------|----------------------------|
-| Core            | Expo · React Native · TypeScript |
-| Estilos         | NativeWind                 |
-| Estado          | Zustand o Context API     |
-| API             | Axios o React Query        |
+## Stack Tecnologico (Frontend)
 
-## 🎯 Objetivos de Evaluación
+- Expo
+- React Native
+- TypeScript
+- NativeWind
+- Zustand
+- Axios
+- React Navigation
 
-**Calidad de código**: Arquitectura limpia, modularización y buenas prácticas  
-**Fidelidad al diseño**: Fidelidad y creatividad en la resolución de los requerimientos de diseño  
-**Performance**: Componentes optimizados y manejo eficiente de estado.    
-**Mantenibilidad**:  Prioriza legibilidad y escalabilidad, con estructura de archivos clara y consistente.
+## Instrucciones de ejecucion (Frontend)
 
-## 📋 Requerimientos funcionales
+### Requisitos
+- Node.js 18 o superior (LTS recomendado)
+- npm
+- Expo (via `npx`)
 
-### 🔐 Módulo de Autenticación
-**Pantallas**:  
-- **Login**
-  - Formulario para el inicio de sesión de los usuarios. 
-  - Validación de campos en tiempo real  
+### Instalacion
 
-### 🔐 Módulo de Onboarding
-- **Datos personales**  
-  - Formulario para completar los datos personales del usuario
-  - Validación de campos en tiempo real      
-  - Manejo de errores específicos (ej: DNI duplicado)
-   ```json
-   // Ejemplo de error en servicio
-   {
-      "success": false,
-      "data": {
-         "name": "DUPLICATE_DNI",
-         "title": "DNI en uso",
-         "message": "El número de documento registrado ya está en uso."
-      }
-   }
+```bash
+npm install
+```
 
-- **Registro exitoso**  
-  - Vista para indicar que todos los datos son correctos.
+### Variables de entorno
 
-### 💱 Módulo de Transacciones
-**Pantalla principal**:  
-- Calculadora PEN ↔ USD  
-- Consumo de API simulada para calcular una operación   
-- Consumo de API simulada para obtener datos de tipo de cambio   
-- Manejo de tasas de cambio dinámicas  
-- Cálculos en tiempo real  
+Crear un archivo `.env` en la raiz del proyecto con:
 
-**Crear una operación**:  
-- Resumen de la operación creada.
-- Se deben seleccionar los bancos y el origen de fondos de acuerdo a mock anexo. 
+```bash
+EXPO_PUBLIC_API_URL=https://own-api-kambista-production.up.railway.app/api/v1/
+```
 
-**Datos de transferencia**:  
-- Datos de la cuenta bancaria de Kambista.
+Tambien puedes guiarte por `.env.example`.
 
-**Adjuntar voucher de depósito**:  
-- Formulario para adjuntar voucher bancario del depósito efectuado.
+Notas:
+- En emulador/dispositivo fisico, evita `localhost`; usa la IP LAN de tu PC.
+- Si cambias variables `EXPO_PUBLIC_*`, reinicia el bundler:
 
-**Transacción creada**:  
-- Resumen de la operación creada.
+```bash
+npx expo start -c
+```
 
-### 💱 Módulo de Cuentas bancarias
-**Agregar cuenta**:  
-  - Formulario para agregar cuenta bancaria con:   
-        *Selector de banco* (usar mock proporcionado)   
-        *Tipo de cuenta* (ahorro/crédito)   
-        *Número de cuenta* (validación: solo dígitos)   
-  - Validación de campos en tiempo real  
-  - Ver listado de bancos a agregar en mock anexo.
-  
+### Ejecucion
 
-### 🟰 Navegación
+```bash
+npm start
+```
 
-Implementar un **Bottom Bar** para cambiar entre módulos principales
+Comandos por plataforma:
 
-### 🚨 Manejo de errores 
-### Estrategias a Implementar
-1. **Errores generales de los Formularios**:
-   - Validación en tiempo real para:
-     - Formato de email correcto.
-     - Nombre sin caracteres especiales ni números.
-     - Formato de documento de identificación acorde a DNI (8 dígitos), CE (9 dígitos), PASAPORTE (de 8 a 15 caracteres)
-     - Teléfono (9 dígitos)
-     - Fecha de nacimiento (Solo registro valido para mayores de edad)
-     - Número de cuenta bancaria solo dígitos.  
-     
-2. **Errores de API**:
-  - Considerar errores en servicios como:
-    - Número de documento o celular en uso
-    - Error general en la respuesta del servicio.
+```bash
+npm run android
+npm run ios
+npm run web
+```
 
-```typescript
-interface APIError {
-  success: false;
-  data: {
-    name: 'DUPLICATE_DNI' | 'INVALID_PHONE' | 'SERVER_ERROR'; // Ejemplos
-    title: string;
-    message: string;
-  };
-}
-``` 
+### Flujo para probar la app
 
-## ⚙️ Requisitos Técnicos
+Para probar la app, primero **registrate** (pantalla de registro; equivale a `POST /auth/register` en la API documentada mas abajo). Despues **inicia sesion** para obtener los tokens y seguir con el flujo protegido (catalogos, tipo de cambio, cuentas, etc.). Sin usuario registrado no podras completar el recorrido como usuario autenticado.
 
-### 🛠️ Configuración
-- NativeWind para estilos  
-- Tipado estricto con TypeScript 
-- Simulación de API usando Axios o React Query.
-- Gestión del estado global usando Context API o Zustand.
+## API para la prueba tecnica
 
-### 🧩 Componentes y vistas
-- Reutilización de UI
-- Props bien tipadas 
-- Simulación de calculadora de divisas con API de Kambista.
-- Navegación fluida entre pantallas
+### A) API publica Kambista (referencia del challenge)
 
-### 🌐 Gestión de Estado
-- Manejo de estado global para:  
-  - Datos de una transacción
-  - Tasas de cambio 
-
-## Simulación de la API
-
-1. Endpoint para obtener el tipo de cambio:
+1. Tipo de cambio actual:
 ```
 https://api.kambista.com/v1/exchange/kambista/current
 ```
 
-2. Endpoint para la calculadora:
+2. Calculadora:
 ```
-https://api.kambista.com/v1/exchange/calculates?originCurrency=PEN&destinationCurrency=USD&amount={cantidad}&active=S
+https://api.kambista.com/v1/exchange/calculates?originCurrency=PEN&destinationCurrency=USD&amount=<monto>&active=S
 ```
 
+### B) Backend de apoyo (Express + Sequelize + MySQL)
 
-## Mocks de data adicional
-Se incluyen dos archivos JSON con datos de prueba:
+Se creo un backend de apoyo con el proposito de mejorar la experiencia de usuario y permitir persistencia de datos en el flujo de la app. Esta API provee autenticacion JWT (access + refresh), catalogos de bancos y origenes de fondos, cuentas de usuario y proxy del tipo de cambio actual de Kambista.
 
-1. **`bankAccounts.json`**  
-   - Listado completo de bancos  
-   - Uso:  
-     - Selector de banco al agregar cuenta  
-     - Elección de entidad financiera en operaciones  
+Tecnologias usadas en el backend:
+- Express
+- Sequelize
+- MySQL
+- JWT
 
-2. **`sourceFunds.json`**  
-   - Listado de orígenes de fondos  
-   - Uso:  
-     - Selector al crear operaciones   
+Formato de error alineado al challenge:
 
-> Los archivos se encuentran en `/mocks`.
+```json
+{
+  "success": false,
+  "data": {
+    "name": "ERROR_CODE",
+    "title": "Titulo",
+    "message": "Mensaje"
+  }
+}
+```
 
-## 📤 Entrega
+#### Rutas `http://<host>:<PORT>/api/v1`
 
-### 🔗 Repositorio Github
+Header para rutas protegidas: `Authorization: Bearer <accessToken>`.
 
-1. Hacer fork del repositorio: [frontend-app-challenge](https://github.com/USERNAME/frontend-app-challenge)
-2. Clonar el fork:
-   ```
-   git clone git@github.com:USERNAME/FORKED-PROJECT.git
-   ```
-3. Crear un nuevo branch con tu nombre:
-   ```
-   git checkout -b {nombre-apellido}
-   ```
-4. Realizar commits con mensajes semánticos
-5. Documentar en README.md instrucciones de ejecución  
-6. Crear un Pull Request y notificar a talentohumano@kambista.com
+| Metodo | Ruta | Auth | Notas |
+|--------|------|------|-------|
+| `POST` | `/auth/register` | No | `email`, `password`, `nombresCompletos`, `tipoDocumento`, `numeroDocumento`, `celular`, `fechaNacimiento` |
+| `POST` | `/auth/login` | No | `email`, `password` -> `user`, `accessToken`, `refreshToken` |
+| `POST` | `/auth/refresh` | No | `refreshToken` |
+| `POST` | `/auth/logout` | No | `refreshToken` |
+| `GET` | `/auth/me` | Bearer | Perfil autenticado |
+| `GET` | `/exchange/current` | Bearer | Proxy tipo cambio -> `ask`, `bid` |
+| `GET` | `/exchange/calculate` | Bearer | Query: `originCurrency`, `destinationCurrency`, `amount`, `active`; reenvia a Kambista `calculates` -> `data` es el JSON crudo de la API publica |
+| `GET` | `/banks` | Bearer | Catalogo de bancos |
+| `GET` | `/source-funds` | Bearer | Catalogo de origen de fondos |
+| `GET` | `/cuentas-usuario?userId=` | Bearer | Listado de cuentas |
+| `POST` | `/cuentas-usuario` | Bearer | `userId`, `entidadId`, `tipoCuenta`, `numeroCuenta`, `moneda` (`PEN` \| `USD`), `alias`, opcional `esPropietario` |
 
-### 📦 APK
+Respuestas exitosas:
 
-Generar y adjuntar un archivo APK usando Expo
+```json
+{ "success": true, "data": {} }
+```
 
-## 🏆 Criterios de Evaluación
+#### Nota para React Native (cliente movil)
 
-- Calidad de código
-- Buenas prácticas de programación
-- Manejo adecuado de errores
+1. **Base URL**: `https://own-api-kambista-production.up.railway.app/api/v1/`.
+2. **Sesion**: login -> guardar tokens -> enviar `Authorization: Bearer` en rutas protegidas -> usar `POST /auth/refresh` cuando caduque el access token.
+3. **Cotizacion en Home**: la pantalla principal usa `GET /exchange/calculate` (Bearer + query) para obtener el monto convertido (`data.exchange` en la respuesta de Kambista). Si la llamada falla, se usa el calculo local con `bid`/`ask` de `GET /exchange/current`. La URL publica de la seccion A sigue siendo la referencia del contrato de Kambista.
 
-## 💡 Bonus (Opcional)
-- Animaciones
-- Agregar en la documentación (README.md) las decisiones técnicas relevantes  
----
+## Decisiones tecnicas
 
-Para cualquier duda o consulta, por favor contactar a talentohumano@kambista.com
+- JWT access + refresh persistido (hash) para cierre de sesion controlado.
+- Catalogos y cuentas en MySQL; en desarrollo se usa `alter: true` por tratarse del challenge.

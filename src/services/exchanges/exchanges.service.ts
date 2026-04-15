@@ -5,11 +5,20 @@ import type {
     CreateCuentaUsuarioPayload,
     CuentaUsuario,
     Exchange,
+    ExchangeCalculateParams,
+    KambistaCalculateData,
     SourceFund,
 } from "./exchanges.types";
 
 export async function getExchanges() {
     return apiClient.get<ApiListResponse<Exchange>>("exchange/current");
+}
+
+export async function getExchangeCalculate(params: ExchangeCalculateParams) {
+    return apiClient.get<ApiListResponse<KambistaCalculateData>>(
+        "exchange/calculate",
+        { params },
+    );
 }
 
 export async function getBanks() {

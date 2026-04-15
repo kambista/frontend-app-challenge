@@ -2,7 +2,7 @@ import type { CompositeNavigationProp } from "@react-navigation/native";
 import { useNavigation } from "@react-navigation/native";
 import type { BottomTabNavigationProp } from "@react-navigation/bottom-tabs";
 import type { NativeStackNavigationProp } from "@react-navigation/native-stack";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Image, Pressable, Text, TextInput, View } from "react-native";
 import AppSafeArea from "../../components/AppSafeArea";
 import Button from "../../components/Button";
@@ -16,7 +16,10 @@ import type {
   AppStackParamList,
   BottomTabParamList,
 } from "../../navigation/navigation.types";
-import { getExchanges } from "../../services/exchanges/exchanges.service";
+import {
+  getExchangeCalculate,
+  getExchanges,
+} from "../../services/exchanges/exchanges.service";
 import { Exchange } from "../../services/exchanges/exchanges.types";
 import type { ExchangeType } from "../../services/exchanges/exchanges.types";
 import { useExchangeStore } from "../../stores/exchange/exchangeStore";
@@ -61,8 +64,17 @@ function sendFromReceive(
   return "";
 }
 
+function destinationAmountFromKambista(
+  data: { exchange?: unknown } & Record<string, unknown>,
+): number | null {
+  const ex = data.exchange;
+  if (typeof ex === "number" && Number.isFinite(ex)) return ex;
+  return null;
+}
+
 export default function HomeScreen() {
   const navigation = useNavigation<HomeNavigationProp>();
+  const setDataExchangeStore = useExchangeStore((s) => s.setData);
 
   const [tab, setTab] = useState<ExchangeType>("compra");
   const [coupon, setCoupon] = useState("");
@@ -72,25 +84,21 @@ export default function HomeScreen() {
     ask: 0,
     bid: 0,
   });
-  const setDataExchangeStore = useExchangeStore((s) => s.setData);
+  
+  const skipCalculateFromReceiveEdit = useRef(false);
 
   const { sendCurrency, receiveCurrency } = MAP_TABS[tab];
 
   const handleTabs = (nextTab: ExchangeType) => {
     setTab(nextTab);
-    setReceiveAmount(
-      receiveFromSend(sendAmount, nextTab, exchanges.bid, exchanges.ask),
-    );
   };
 
   const handleSendChange = (text: string) => {
     setSendAmount(text);
-    setReceiveAmount(
-      receiveFromSend(text, tab, exchanges.bid, exchanges.ask),
-    );
   };
 
   const handleReceiveChange = (text: string) => {
+    skipCalculateFromReceiveEdit.current = true;
     setReceiveAmount(text);
     setSendAmount(
       sendFromReceive(text, tab, exchanges.bid, exchanges.ask),
@@ -123,6 +131,61 @@ export default function HomeScreen() {
 
     fetchExchanges();
   }, []);
+
+  useEffect(() => {
+    if (skipCalculateFromReceiveEdit.current) {
+      skipCalculateFromReceiveEdit.current = false;
+      return;
+    }
+
+    let cancelled = false;
+
+    void (async () => {
+      const cantidad = Number(sendAmount.trim());
+
+      if (!Number.isFinite(cantidad) || cantidad <= 0) {
+        if (!cancelled) setReceiveAmount("");
+        return;
+      }
+
+      const originCurrency = tab === "compra" ? "USD" : "PEN";
+      const destinationCurrency = tab === "compra" ? "PEN" : "USD";
+
+      try {
+        const res = await getExchangeCalculate({
+          originCurrency,
+          destinationCurrency,
+          amount: String(cantidad),
+          active: "S",
+        });        
+
+        if (cancelled) return;
+        
+        if (res.data.success) {
+          const dest = destinationAmountFromKambista(res.data.data);
+
+          console.log(res.data);
+          
+          if (dest !== null) {
+            setReceiveAmount(dest.toFixed(2));
+            return;
+          }
+        }
+        setReceiveAmount(
+          receiveFromSend(sendAmount, tab, exchanges.bid, exchanges.ask),
+        );
+      } catch {
+        if (cancelled) return;
+        setReceiveAmount(
+          receiveFromSend(sendAmount, tab, exchanges.bid, exchanges.ask),
+        );
+      }
+    })();
+
+    return () => {
+      cancelled = true;
+    };
+  }, [sendAmount, tab, exchanges.bid, exchanges.ask]);
 
   return (
     <AppSafeArea

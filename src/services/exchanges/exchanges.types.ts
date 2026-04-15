@@ -5,6 +5,23 @@ export type Exchange = {
     bid: number;
 };
 
+/** Query params for GET /exchange/calculate (forwarded to Kambista calculates). */
+export type ExchangeCalculateParams = {
+    originCurrency: string;
+    destinationCurrency: string;
+    amount: string;
+    active?: string;
+};
+
+/** Raw JSON from Kambista calculates; common fields are optional for typing. */
+export type KambistaCalculateData = {
+    rate?: number;
+    exchange?: number;
+    tc?: { bid?: number; ask?: number };
+    data?: Record<string, unknown>;
+    savings?: Record<string, unknown>;
+} & Record<string, unknown>;
+
 export type Bank = {
     id: number;
     name: string;
