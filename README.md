@@ -5,12 +5,25 @@
 Este reto técnico consiste en desarrollar una aplicación de conversión de divisas con autenticación, siguiendo los diseños proporcionados en este [Figma](https://www.figma.com/design/0r7lOY04Vv3Ht9UJItO7yX/Prueba?node-id=0-1&node-type=canvas&t=xY3A9Vp4Xe4zmQCW-0).
   
 ### 🔧 Stack Tecnológico
-| Categoría       | Tecnologías                |
-|-----------------|----------------------------|
-| Core            | Expo · React Native · TypeScript |
-| Estilos         | NativeWind                 |
-| Estado          | Zustand o Context API     |
-| API             | Axios o React Query        |
+*Experiencia sólida en **al menos uno** de los siguientes entornos:*
+
+### 📱 React Native
+
+| Categoría | Tecnologías                    |
+|-----------|--------------------------------|
+| Core      | Expo · React Native · TypeScript |
+| Estilos   | NativeWind                     |
+| Estado    | Redux · Zustand · Context      |
+| API       | Axios o React Query            |
+
+### 🐦 Flutter
+
+| Categoría | Tecnologías                          |
+|-----------|--------------------------------------|
+| Core      | Flutter · Dart                       |
+| Estilos   | Material 3 (built-in) · ThemeData    |
+| Estado    | BLoC · Riverpod · Provider           |
+| API       | Dio o http/retrofit                  |
 
 ## 🎯 Objetivos de Evaluación
 
@@ -111,21 +124,21 @@ interface APIError {
 ## ⚙️ Requisitos Técnicos
 
 ### 🛠️ Configuración
-- NativeWind para estilos  
-- Tipado estricto con TypeScript 
-- Simulación de API usando Axios o React Query.
-- Gestión del estado global usando Context API o Zustand.
+- Sistema de estilos propio del framework (NativeWind / Material 3)
+- Tipado estricto (TypeScript / Dart)
+- Consumo de API con cliente HTTP y manejo de datos
+- Gestión del estado global
 
 ### 🧩 Componentes y vistas
-- Reutilización de UI
-- Props bien tipadas 
-- Simulación de calculadora de divisas con API de Kambista.
+- Reutilización de UI (componentes / widgets)
+- Props / parámetros bien tipados
+- Simulación de calculadora de divisas con la API de Kambista
 - Navegación fluida entre pantallas
 
 ### 🌐 Gestión de Estado
-- Manejo de estado global para:  
+- Manejo de estado global para:
   - Datos de una transacción
-  - Tasas de cambio 
+  - Tasas de cambio
 
 ## Simulación de la API
 
