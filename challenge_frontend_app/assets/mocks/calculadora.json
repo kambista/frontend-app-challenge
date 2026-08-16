@@ -1,0 +1,19 @@
+
+https://api.kambista.com/v1/exchange/calculates?originCurrency=PEN&destinationCurrency=USD&amount=1000&active=S
+{
+    
+    "rate": 3.377,
+    "exchange": 296.12,
+    "tc": {
+        "bid": 3.35,
+        "ask": 3.377
+    },
+    "data": {
+        "operate": true,
+        "msg": "Puede operar"
+    },
+    "savings": {
+        "amount": "4.44",
+        "currency": "$"
+    }
+}
